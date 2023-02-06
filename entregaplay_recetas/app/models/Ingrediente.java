@@ -10,7 +10,7 @@ import java.util.List;
 @Entity
 public class Ingrediente extends Model{
 
-    //public static final Finder<Long,User> find = new Finder<>(User.class);
+    public static final Finder<Long,Ingrediente> find = new Finder<>(Ingrediente.class);
     @Id
     private Long id;
 

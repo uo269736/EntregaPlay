@@ -9,7 +9,7 @@ import javax.persistence.OneToOne;
 @Entity
 public class ImagenReceta extends Model {
 
-   // @OneToOne(mappedBy = "imagen")
+    @OneToOne(mappedBy = "imagen")
     private Receta parentReceta;
 
     private String url;
