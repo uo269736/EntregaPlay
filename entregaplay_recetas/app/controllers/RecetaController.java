@@ -1,38 +1,92 @@
 package controllers;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import models.Receta;
+import play.data.Form;
+import play.data.FormFactory;
+import play.libs.Json;
 import play.mvc.*;
+import views.RecetaResource;
 
-/**
- * This controller contains an action to handle HTTP requests
- * to the application's home page.
- */
+import javax.inject.Inject;
+import java.util.List;
+import java.util.stream.Collectors;
+
+
 public class RecetaController extends Controller {
 
-    /**
-     * An action that renders an HTML page with a welcome message.
-     * The configuration in the <code>routes</code> file means that
-     * this method will be called when the application receives a
-     * <code>GET</code> request with a path of <code>/</code>.
-     */
+
+    @Inject
+    private FormFactory formFactory;
+
     public Result create(Http.Request req) {
-        return ok(views.html.index.render());
+        // Los datos de la receta para crearlo vienen en el body
+
+
+        Form<RecetaResource> recetaForm = formFactory.form(RecetaResource.class).bindFromRequest(req);
+        RecetaResource recetaResource;
+
+        if (recetaForm.hasErrors()){
+            return Results.badRequest(recetaForm.errorsAsJson());
+        } else {
+            recetaResource = recetaForm.get();
+        }
+
+        Receta recetaModel = recetaResource.toModel();
+        recetaModel.save();
+
+        // Añadimos el id que va a tener cada receta en nuestro array (Hacer comprobacion de repetidos)
+        ObjectNode jsonRes = Json.newObject();
+        jsonRes.put("id", recetaModel.getId());
+        return Results.created("Receta creada con ID: " + jsonRes);
+
+
+
     }
+
 
     public Result get(Integer id, Http.Request req) {
-        return ok(views.html.index.render());
+
+        Receta rec = Receta.findById(Long.valueOf(id));
+
+        if (rec == null){
+            // Nos piden uno que no existe
+            return Results.notFound();
+        }
+        if (id <= 0){
+            return Results.notFound();
+        }
+
+        RecetaResource recetaResource = new RecetaResource(rec);
+
+        return Results.ok(recetaResource.toJson());
+
     }
 
+
+
+
     public Result update(Integer id, Http.Request req) {
-        return ok(views.html.index.render());
+        return null;
     }
 
     public Result delete(Integer id, Http.Request req) {
-        return ok(views.html.index.render());
+        return null;
     }
 
     public Result getAll(Http.Request req) {
-        return ok(views.html.index.render());
+
+        List<Receta> recetas = Receta.findAll();
+        List<RecetaResource> resources = recetas.stream().map(RecetaResource::new).collect(Collectors.toList());
+        JsonNode json = Json.toJson(resources);
+        Result res = Results.ok(json);
+        return res;
+
     }
+
+
 
 
 }

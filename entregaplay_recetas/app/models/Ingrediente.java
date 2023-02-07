@@ -10,9 +10,13 @@ import java.util.List;
 @Entity
 public class Ingrediente extends Model{
 
+
     public static final Finder<Long,Ingrediente> find = new Finder<>(Ingrediente.class);
     @Id
     private Long id;
+
+    @ManyToOne
+    private Receta parentReceta;
 
     private String nombre;
     private Integer cantidad;

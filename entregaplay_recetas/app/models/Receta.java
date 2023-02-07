@@ -1,56 +1,98 @@
 package models;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.ebean.Finder;
-import  io.ebean.Model;
+import io.ebean.Model;
+import play.data.validation.Constraints;
+import play.libs.Json;
 
 import javax.persistence.*;
-import java.util.ArrayList;
+import javax.validation.constraints.NotBlank;
 import java.util.List;
 
 @Entity
 public class Receta extends Model{
 
-    //public static final Finder<Long,User> find = new Finder<>(User.class);
+
+    public static final Finder<Long, Receta> find = new Finder<>(Receta.class); //Esto nos permite leer de la bbdd
+
+
     @Id
     private Long id;
-    private String nombre;
+    private String name;
+    //private String ingrediente;
+
+    @OneToMany (cascade = CascadeType.ALL, mappedBy = "parentReceta")
+    private List<Ingrediente> ingredientes;
+
+
+    // Métodos de acceso
+    public static Receta findById(Long id){
+        //Receta.findById(1)
+        return find.byId(id);
+    }
+
+    public static Receta findByName(String name){
+        //Receta.findByName(pepe)
+        return find.query().where().eq("name", name).findOne();
+    }
+
+    public static List<Receta> findAll(){
+        //Receta.findByName(receta1)
+        return find.all();
+    }
+
+
+
+    // Getters & Setters
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+    public String getName() {
+        return name;
+    }
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public List<Ingrediente> getIngredientes() {
+        return ingredientes;
+    }
+
+    public void setIngredientes(List<Ingrediente> ingredientes) {
+        this.ingredientes = ingredientes;
+    }
+
+    public JsonNode toJson() {
+        return Json.toJson(this);
+    }
+
+
+
+
+
+
+
+
+
+    /*
     private String descripcion;
     private ArrayList<Ingrediente> ingredientes;
     private String pasos;
     private Integer tiempo;
-
+*/
 
 
     //@OneToOne (cascade = CascadeType.ALL)
-    private ImagenReceta imagen;
+   // private ImagenReceta imagen;
 /*
     // métodos de acceso
-    public static User findById(Long id){
-        //User.findById(1)
-        return find.byId(id);
-    }
 
-    public static User findByName(String name){
-        //User.findByName(pepe)
-        return find.query().where().eq("name", name).findOne();
-    }
-
-    public static List<User> findAll(){
-        //User.findByName(pepe)
-        return find.all();
-    }
-
-    public static List<User> findGreaterThanAge(Integer age){
-        //User.findGreaterThanAge(18)
-        return find.query()
-                .where()
-                .gt("age", age)
-                .orderBy("name")
-                .setMaxRows(25)
-                .setFirstRow(0)
-                //.getGeneratedSql()
-                .findList();
-    }*/
 
     // getters & setters
     public Long getId() {
@@ -108,4 +150,7 @@ public class Receta extends Model{
     public void setImagen(ImagenReceta imagen) {
         this.imagen = imagen;
     }
+
+    */
+
 }

@@ -9,6 +9,7 @@ import javax.persistence.OneToOne;
 @Entity
 public class ImagenReceta extends Model {
 
+    /*
     @OneToOne(mappedBy = "imagen")
     private Receta parentReceta;
 
@@ -38,4 +39,6 @@ public class ImagenReceta extends Model {
     public void setUrl(String url) {
         this.url = url;
     }
+
+     */
 }
