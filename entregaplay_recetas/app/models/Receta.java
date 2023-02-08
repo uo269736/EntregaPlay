@@ -9,6 +9,7 @@ import play.libs.Json;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -21,10 +22,15 @@ public class Receta extends Model{
     @Id
     private Long id;
     private String name;
-    //private String ingrediente;
-
     @OneToMany (cascade = CascadeType.ALL, mappedBy = "parentReceta")
     private List<Ingrediente> ingredientes;
+
+    private String descripcion;
+    private String pasos;
+    private Integer tiempo;
+
+//    @OneToOne (cascade = CascadeType.ALL)
+//    private ImagenReceta imagen;
 
 
     // Métodos de acceso
@@ -68,63 +74,12 @@ public class Receta extends Model{
         this.ingredientes = ingredientes;
     }
 
-    public JsonNode toJson() {
-        return Json.toJson(this);
-    }
-
-
-
-
-
-
-
-
-
-    /*
-    private String descripcion;
-    private ArrayList<Ingrediente> ingredientes;
-    private String pasos;
-    private Integer tiempo;
-*/
-
-
-    //@OneToOne (cascade = CascadeType.ALL)
-   // private ImagenReceta imagen;
-/*
-    // métodos de acceso
-
-
-    // getters & setters
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
     public String getDescripcion() {
         return descripcion;
     }
 
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
-    }
-
-    public ArrayList<Ingrediente> getIngredientes() {
-        return ingredientes;
-    }
-
-    public void setIngredientes(ArrayList<Ingrediente> ingredientes) {
-        this.ingredientes = ingredientes;
     }
 
     public String getPasos() {
@@ -143,14 +98,25 @@ public class Receta extends Model{
         this.tiempo = tiempo;
     }
 
-    public ImagenReceta getImagen() {
-        return imagen;
+//    public ImagenReceta getImagen() {
+//        return imagen;
+//    }
+//
+//    public void setImagen(ImagenReceta imagen) {
+//        this.imagen = imagen;
+//    }
+
+    public void addIngredientes (Ingrediente ingrediente){
+        if(this.ingredientes == null){
+            this.ingredientes = new ArrayList<>();
+        }
+        this.ingredientes.add(ingrediente);
+        ingrediente.setParentReceta(this);
     }
 
-    public void setImagen(ImagenReceta imagen) {
-        this.imagen = imagen;
+    public JsonNode toJson() {
+        return Json.toJson(this);
     }
 
-    */
 
 }

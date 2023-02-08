@@ -85,4 +85,12 @@ public class Ingrediente extends Model{
     public void setUnidad(String unidad) {
         this.unidad = unidad;
     }
+
+    public Receta getParentReceta() {
+        return parentReceta;
+    }
+
+    public void setParentReceta(Receta parentReceta) {
+        this.parentReceta = parentReceta;
+    }
 }

@@ -23,7 +23,26 @@ public class RecetaController extends Controller {
 
     public Result create(Http.Request req) {
         // Los datos de la receta para crearlo vienen en el body
-
+        /* JSON DE PRUEBA
+{
+    "name":"pasta",
+    "ingredientes":[
+        {
+            "nombre":"pasta",
+            "cantidad":100,
+            "unidad":"g"
+        },
+        {
+            "nombre":"nata",
+            "cantidad":30,
+            "unidad":"centilitros"
+        }
+    ],
+    "descripcion":"Receta rica",
+    "pasos":"Primer cueces la pasta y luego echas la nata",
+    "tiempo":10
+}
+         */
 
         Form<RecetaResource> recetaForm = formFactory.form(RecetaResource.class).bindFromRequest(req);
         RecetaResource recetaResource;

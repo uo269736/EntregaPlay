@@ -1,6 +1,7 @@
 package models;
 
 
+import io.ebean.Finder;
 import io.ebean.Model;
 
 import javax.persistence.Entity;
@@ -9,9 +10,8 @@ import javax.persistence.OneToOne;
 @Entity
 public class ImagenReceta extends Model {
 
-    /*
-    @OneToOne(mappedBy = "imagen")
-    private Receta parentReceta;
+//    @OneToOne(mappedBy = "imagen")
+//    private Receta parentReceta;
 
     private String url;
     private Long id;
@@ -24,13 +24,13 @@ public class ImagenReceta extends Model {
         this.id = id;
     }
 
-    public Receta getParentReceta() {
-        return parentReceta;
-    }
-
-    public void setParentReceta(Receta parentReceta) {
-        this.parentReceta = parentReceta;
-    }
+//    public Receta getParentReceta() {
+//        return parentReceta;
+//    }
+//
+//    public void setParentReceta(Receta parentReceta) {
+//        this.parentReceta = parentReceta;
+//    }
 
     public String getUrl() {
         return url;
@@ -39,6 +39,4 @@ public class ImagenReceta extends Model {
     public void setUrl(String url) {
         this.url = url;
     }
-
-     */
 }
