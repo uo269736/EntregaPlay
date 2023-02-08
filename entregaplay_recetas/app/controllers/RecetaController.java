@@ -3,6 +3,7 @@ package controllers;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import models.Ingrediente;
 import models.Receta;
 import play.data.Form;
 import play.data.FormFactory;
@@ -25,7 +26,7 @@ public class RecetaController extends Controller {
         // Los datos de la receta para crearlo vienen en el body
         /* JSON DE PRUEBA
 {
-    "name":"pasta",
+    "nombre":"pasta",
     "ingredientes":[
         {
             "nombre":"pasta",
@@ -51,16 +52,16 @@ public class RecetaController extends Controller {
             return Results.badRequest(recetaForm.errorsAsJson());
         } else {
             recetaResource = recetaForm.get();
+
+            Receta recetaModel = recetaResource.toModel();
+            recetaModel.save();
+
+            // Añadimos el id que va a tener cada receta en nuestro array (Hacer comprobacion de repetidos)
+            ObjectNode jsonRes = Json.newObject();
+            jsonRes.put("id", recetaModel.getId());
+            return Results.created("Receta creada con ID: " + jsonRes);
+
         }
-
-        Receta recetaModel = recetaResource.toModel();
-        recetaModel.save();
-
-        // Añadimos el id que va a tener cada receta en nuestro array (Hacer comprobacion de repetidos)
-        ObjectNode jsonRes = Json.newObject();
-        jsonRes.put("id", recetaModel.getId());
-        return Results.created("Receta creada con ID: " + jsonRes);
-
 
 
     }
@@ -98,6 +99,9 @@ public class RecetaController extends Controller {
     public Result getAll(Http.Request req) {
 
         List<Receta> recetas = Receta.findAll();
+
+
+
         List<RecetaResource> resources = recetas.stream().map(RecetaResource::new).collect(Collectors.toList());
         JsonNode json = Json.toJson(resources);
         Result res = Results.ok(json);

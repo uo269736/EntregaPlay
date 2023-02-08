@@ -9,24 +9,40 @@ import org.hibernate.validator.constraints.URL;
 import play.data.validation.Constraints;
 import play.libs.Json;
 
+import javax.persistence.Column;
+import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotBlank;
 import java.util.List;
 
 public class RecetaResource {
 
-    @JsonProperty("name")
+    @JsonProperty("nombre")
     @Constraints.Required
-    @NotBlank
-    private String name;
+    @NotBlank(message = "nombre vacio")
+    private String nombre;
+
+    @Constraints.Required
     private List<Ingrediente> ingredientes;
 
+    @Constraints.Required
+    @NotBlank(message = "descripcion receta vacia")
     private String descripcion;
 
+    @Constraints.Required
+    @NotBlank(message = "pasos receta vacio")
     private String pasos;
+
+    @Constraints.Required
+    @Constraints.Min(1)
     private Integer tiempo;
 
-//    @URL
-//    private String urlImagen;
+
+
+    private ImagenReceta urlImagen;
+
+    //@URL(message = "introduce una url correcta")
+    //@Constraints.Required
+    //private String urlImagen;
 
     // Para permitir crear una receta:
     public RecetaResource(){
@@ -34,23 +50,27 @@ public class RecetaResource {
     }
     public RecetaResource(Receta receta){
         super();
-        this.name = receta.getName();
+        this.nombre = receta.getNombre();
         this.ingredientes = receta.getIngredientes();
         this.descripcion = receta.getDescripcion();
         this.pasos = receta.getPasos();
         this.tiempo = receta.getTiempo();
-//        ImagenReceta ir = receta.getImagen();
-//        if (ir != null){
-//            this.urlImagen = ir.getUrl();
-//        }
+        this.urlImagen = receta.getImagen();
+        /*
+        ImagenReceta ir = receta.getImagen();
+        if (ir != null){
+            this.urlImagen = ir.getUrl();
+        }
+
+         */
     }
 
-    public String getName() {
-        return name;
+    public String getNombre() {
+        return nombre;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 
 
@@ -86,13 +106,25 @@ public class RecetaResource {
         this.tiempo = tiempo;
     }
 
-//    public String getUrlImagen() {
-//        return urlImagen;
-//    }
-//
-//    public void setUrlImagen(String urlImagen) {
-//        this.urlImagen = urlImagen;
-//    }
+    /*
+
+    public String getUrlImagen() {
+        return urlImagen;
+    }
+
+    public void setUrlImagen(String urlImagen) {
+        this.urlImagen = urlImagen;
+    }
+
+     */
+
+    public ImagenReceta getUrlImagen() {
+        return urlImagen;
+    }
+
+    public void setUrlImagen(ImagenReceta urlImagen) {
+        this.urlImagen = urlImagen;
+    }
 
     public JsonNode toJson() {
         return Json.toJson(this);
@@ -100,16 +132,33 @@ public class RecetaResource {
 
     public Receta toModel(){
         Receta rec = new Receta();
-        rec.setName(this.name);
+        rec.setNombre(this.nombre);
+
+        // Preguntar si esta bien
+        /*
+        for ( Ingrediente i : this.ingredientes
+             ) {
+            i.setParentReceta(rec);
+        }
+
+         */
         rec.setIngredientes(this.ingredientes);
+
         rec.setDescripcion(this.descripcion);
         rec.setPasos(this.pasos);
         rec.setTiempo(this.tiempo);
 
-//        ImagenReceta imagenReceta = new ImagenReceta();
-//        imagenReceta.setUrl(this.urlImagen);
-//        imagenReceta.setParentReceta(rec);
-//        rec.setImagen(imagenReceta);
+        rec.setImagen(this.urlImagen);
+
+        /*
+        ImagenReceta imagenReceta = new ImagenReceta();
+        imagenReceta.setUrl(this.urlImagen);
+        imagenReceta.setParentReceta(rec);
+        rec.setImagen(imagenReceta);
+         */
+
+
+
         return rec;
     }
 

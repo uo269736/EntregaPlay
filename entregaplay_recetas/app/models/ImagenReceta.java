@@ -1,19 +1,24 @@
 package models;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import io.ebean.Finder;
 import io.ebean.Model;
 
 import javax.persistence.Entity;
+import javax.persistence.Id;
 import javax.persistence.OneToOne;
 
 @Entity
 public class ImagenReceta extends Model {
 
-//    @OneToOne(mappedBy = "imagen")
-//    private Receta parentReceta;
+    @OneToOne(mappedBy = "imagen")
+    @JsonBackReference
+    private Receta parentReceta;
 
     private String url;
+
+    @Id
     private Long id;
 
     public Long getId() {
@@ -24,13 +29,13 @@ public class ImagenReceta extends Model {
         this.id = id;
     }
 
-//    public Receta getParentReceta() {
-//        return parentReceta;
-//    }
-//
-//    public void setParentReceta(Receta parentReceta) {
-//        this.parentReceta = parentReceta;
-//    }
+    public Receta getParentReceta() {
+        return parentReceta;
+    }
+
+    public void setParentReceta(Receta parentReceta) {
+        this.parentReceta = parentReceta;
+    }
 
     public String getUrl() {
         return url;

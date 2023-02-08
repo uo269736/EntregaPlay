@@ -1,9 +1,14 @@
 package models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.ebean.Finder;
 import  io.ebean.Model;
+import play.data.validation.Constraints;
+import play.libs.Json;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,13 +21,21 @@ public class Ingrediente extends Model{
     private Long id;
 
     @ManyToOne
+    @JsonBackReference
     private Receta parentReceta;
 
+
     private String nombre;
+
+
     private Integer cantidad;
+
+
     private String unidad;
 
     // métodos de acceso
+
+
     /*
     public static User findById(Long id){
         //User.findById(1)
@@ -93,4 +106,7 @@ public class Ingrediente extends Model{
     public void setParentReceta(Receta parentReceta) {
         this.parentReceta = parentReceta;
     }
+
+
+
 }

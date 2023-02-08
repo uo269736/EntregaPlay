@@ -1,18 +1,22 @@
 package models;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.ebean.Finder;
 import io.ebean.Model;
-import play.data.validation.Constraints;
+
 import play.libs.Json;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@Table(
+        name="RECETA",
+        uniqueConstraints =
+                @UniqueConstraint(columnNames = {"NOMBRE"})
+)
 public class Receta extends Model{
 
 
@@ -21,16 +25,20 @@ public class Receta extends Model{
 
     @Id
     private Long id;
-    private String name;
+
+
+    private String nombre;
     @OneToMany (cascade = CascadeType.ALL, mappedBy = "parentReceta")
+    @JsonManagedReference
     private List<Ingrediente> ingredientes;
 
     private String descripcion;
     private String pasos;
     private Integer tiempo;
 
-//    @OneToOne (cascade = CascadeType.ALL)
-//    private ImagenReceta imagen;
+    @OneToOne (cascade = CascadeType.ALL)
+    @JsonManagedReference
+    private ImagenReceta imagen;
 
 
     // Métodos de acceso
@@ -39,9 +47,9 @@ public class Receta extends Model{
         return find.byId(id);
     }
 
-    public static Receta findByName(String name){
+    public static Receta findByNombre(String nombre){
         //Receta.findByName(pepe)
-        return find.query().where().eq("name", name).findOne();
+        return find.query().where().eq("nombre", nombre).findOne();
     }
 
     public static List<Receta> findAll(){
@@ -59,11 +67,11 @@ public class Receta extends Model{
     public void setId(Long id) {
         this.id = id;
     }
-    public String getName() {
-        return name;
+    public String getNombre() {
+        return nombre;
     }
-    public void setName(String name) {
-        this.name = name;
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 
     public List<Ingrediente> getIngredientes() {
@@ -98,13 +106,13 @@ public class Receta extends Model{
         this.tiempo = tiempo;
     }
 
-//    public ImagenReceta getImagen() {
-//        return imagen;
-//    }
-//
-//    public void setImagen(ImagenReceta imagen) {
-//        this.imagen = imagen;
-//    }
+    public ImagenReceta getImagen() {
+        return imagen;
+    }
+
+    public void setImagen(ImagenReceta imagen) {
+        this.imagen = imagen;
+    }
 
     public void addIngredientes (Ingrediente ingrediente){
         if(this.ingredientes == null){
