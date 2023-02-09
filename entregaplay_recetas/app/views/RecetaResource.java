@@ -38,7 +38,7 @@ public class RecetaResource {
 
 
 
-    private ImagenReceta urlImagen;
+    private ImagenReceta imagen;
 
     //@URL(message = "introduce una url correcta")
     //@Constraints.Required
@@ -55,7 +55,7 @@ public class RecetaResource {
         this.descripcion = receta.getDescripcion();
         this.pasos = receta.getPasos();
         this.tiempo = receta.getTiempo();
-        this.urlImagen = receta.getImagen();
+        this.imagen = receta.getImagen();
         /*
         ImagenReceta ir = receta.getImagen();
         if (ir != null){
@@ -118,12 +118,12 @@ public class RecetaResource {
 
      */
 
-    public ImagenReceta getUrlImagen() {
-        return urlImagen;
+    public ImagenReceta getImagen() {
+        return imagen;
     }
 
-    public void setUrlImagen(ImagenReceta urlImagen) {
-        this.urlImagen = urlImagen;
+    public void setImagen(ImagenReceta urlImagen) {
+        this.imagen = urlImagen;
     }
 
     public JsonNode toJson() {
@@ -148,7 +148,7 @@ public class RecetaResource {
         rec.setPasos(this.pasos);
         rec.setTiempo(this.tiempo);
 
-        rec.setImagen(this.urlImagen);
+        rec.setImagen(this.imagen);
 
         /*
         ImagenReceta imagenReceta = new ImagenReceta();

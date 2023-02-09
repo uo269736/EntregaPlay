@@ -26,7 +26,7 @@ public class RecetaController extends Controller {
         // Los datos de la receta para crearlo vienen en el body
         /* JSON DE PRUEBA
 {
-    "nombre":"pasta",
+    "nombre":"pasta2",
     "ingredientes":[
         {
             "nombre":"pasta",
@@ -41,7 +41,12 @@ public class RecetaController extends Controller {
     ],
     "descripcion":"Receta rica",
     "pasos":"Primer cueces la pasta y luego echas la nata",
-    "tiempo":10
+    "tiempo":10,
+    "imagen":
+        {
+            "url":"123",
+            "descripcionImagen":"Plato de pasta"
+        }
 }
          */
 

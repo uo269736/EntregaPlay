@@ -15,7 +15,7 @@ import java.util.List;
 @Table(
         name="RECETA",
         uniqueConstraints =
-                @UniqueConstraint(columnNames = {"NOMBRE"})
+                @UniqueConstraint(columnNames = {"nombre"})
 )
 public class Receta extends Model{
 
