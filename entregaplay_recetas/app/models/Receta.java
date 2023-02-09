@@ -19,26 +19,21 @@ import java.util.List;
 )
 public class Receta extends Model{
 
-
     public static final Finder<Long, Receta> find = new Finder<>(Receta.class); //Esto nos permite leer de la bbdd
-
 
     @Id
     private Long id;
-
-
     private String nombre;
-    @OneToMany (cascade = CascadeType.ALL, mappedBy = "parentReceta")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "parentReceta")
     @JsonManagedReference
     private List<Ingrediente> ingredientes;
-
     private String descripcion;
     private String pasos;
     private Integer tiempo;
-
-    @OneToOne (cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL)
     @JsonManagedReference
     private ImagenReceta imagen;
+
 
 
     // Métodos de acceso
@@ -106,6 +101,7 @@ public class Receta extends Model{
         this.tiempo = tiempo;
     }
 
+
     public ImagenReceta getImagen() {
         return imagen;
     }
@@ -121,6 +117,7 @@ public class Receta extends Model{
         this.ingredientes.add(ingrediente);
         ingrediente.setParentReceta(this);
     }
+
 
     public JsonNode toJson() {
         return Json.toJson(this);

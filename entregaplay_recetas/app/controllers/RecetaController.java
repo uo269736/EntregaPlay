@@ -80,9 +80,6 @@ public class RecetaController extends Controller {
             // Nos piden uno que no existe
             return Results.notFound();
         }
-        if (id <= 0){
-            return Results.notFound();
-        }
 
         RecetaResource recetaResource = new RecetaResource(rec);
 
@@ -91,21 +88,64 @@ public class RecetaController extends Controller {
     }
 
 
-
-
     public Result update(Integer id, Http.Request req) {
-        return null;
+
+        Receta rec = Receta.findById(Long.valueOf(id));
+
+        Form<RecetaResource> recetaForm = formFactory.form(RecetaResource.class).bindFromRequest(req);
+        RecetaResource recetaResource;
+
+        if (recetaForm.hasErrors()){
+            return Results.badRequest(recetaForm.errorsAsJson());
+        } else {
+            recetaResource = recetaForm.get();
+
+            Receta recetaModel = recetaResource.toModel();
+            recetaModel.setId(rec.getId());
+            recetaModel.getImagen().setId(rec.getImagen().getId());
+
+            for (Integer i = 0; i<rec.getIngredientes().size(); i++ ) {
+                recetaModel.getIngredientes().get(i).setId(rec.getIngredientes().get(i).getId());
+            }
+
+            recetaModel.update();
+
+            System.out.println("Receta model: " + recetaModel);
+
+            // Añadimos el id que va a tener cada receta en nuestro array (Hacer comprobacion de repetidos)
+            ObjectNode jsonRes = Json.newObject();
+            jsonRes.put("id", recetaModel.getId());
+            return Results.created("Receta modificada con ID: " + jsonRes);
+
+        }
+
+
     }
 
     public Result delete(Integer id, Http.Request req) {
-        return null;
+
+        Receta rec = Receta.findById(Long.valueOf(id));
+
+        if (rec == null){
+            // Nos piden uno que no existe
+            return Results.notFound("La receta no existe");
+        } else {
+
+            //RecetaResource recetaResource = new RecetaResource(rec);
+            //Receta recetaModel = recetaResource.toModel();
+           // recetaModel.delete();
+
+            rec.delete();
+            return Results.ok("Receta con id: " + id + " eliminada");
+        }
+
+
+
     }
 
     public Result getAll(Http.Request req) {
 
         List<Receta> recetas = Receta.findAll();
-
-
 
         List<RecetaResource> resources = recetas.stream().map(RecetaResource::new).collect(Collectors.toList());
         JsonNode json = Json.toJson(resources);
@@ -113,6 +153,7 @@ public class RecetaController extends Controller {
         return res;
 
     }
+
 
 
 

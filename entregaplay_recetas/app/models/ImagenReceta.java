@@ -2,9 +2,11 @@ package models;
 
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.ebean.Finder;
 import io.ebean.Model;
 import org.hibernate.validator.constraints.URL;
+import play.libs.Json;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -13,25 +15,21 @@ import javax.persistence.OneToOne;
 @Entity
 public class ImagenReceta extends Model {
 
+    public static final Finder<Long, ImagenReceta> find = new Finder<>(ImagenReceta.class);
+
     @OneToOne(mappedBy = "imagen")
     @JsonBackReference
+    //@JsonBackReference
     private Receta parentReceta;
-
-    //@URL
-    private String url;
-
-    private String descripcionImagen;
 
     @Id
     private Long id;
 
-    public Long getId() {
-        return id;
-    }
+    private String url;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+//    private String descripcionImagen;
+
+
 
     public Receta getParentReceta() {
         return parentReceta;
@@ -39,6 +37,14 @@ public class ImagenReceta extends Model {
 
     public void setParentReceta(Receta parentReceta) {
         this.parentReceta = parentReceta;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getUrl() {
@@ -49,11 +55,7 @@ public class ImagenReceta extends Model {
         this.url = url;
     }
 
-    public String getDescripcionImagen() {
-        return descripcionImagen;
-    }
-
-    public void setDescripcionImagen(String descripcionImagen) {
-        this.descripcionImagen = descripcionImagen;
+    public JsonNode toJson() {
+        return Json.toJson(this);
     }
 }

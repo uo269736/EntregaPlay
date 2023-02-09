@@ -3593,3 +3593,45 @@ SELECT * FROMIMAGEN_RECETA [42000-200]
 org.h2.jdbc.JdbcSQLSyntaxErrorException: Error de Sintaxis en sentencia SQL "SELECT * FROMINGREDIENTE[*]"
 Syntax error in SQL statement "SELECT * FROMINGREDIENTE[*]"; SQL statement:
 SELECT * FROMINGREDIENTE [42000-200]
+2023-02-09 18:15:26 jdbc[105]: null
+org.h2.message.DbException: La conexión no fue cerrada por la aplicación y esta siendo limpiada (garbage collected)
+The connection was not closed by the application and is garbage collected [90018-200]
+	at org.h2.message.DbException.get(DbException.java:205)
+	at org.h2.message.DbException.get(DbException.java:181)
+	at org.h2.message.DbException.get(DbException.java:170)
+	at org.h2.jdbc.JdbcConnection.closeOld(JdbcConnection.java:245)
+	at org.h2.jdbc.JdbcConnection.<init>(JdbcConnection.java:186)
+	at org.h2.jdbc.JdbcConnection.<init>(JdbcConnection.java:152)
+	at org.h2.Driver.connect(Driver.java:69)
+	at com.zaxxer.hikari.util.DriverDataSource.getConnection(DriverDataSource.java:138)
+	at com.zaxxer.hikari.pool.PoolBase.newConnection(PoolBase.java:358)
+	at com.zaxxer.hikari.pool.PoolBase.newPoolEntry(PoolBase.java:206)
+	at com.zaxxer.hikari.pool.HikariPool.createPoolEntry(HikariPool.java:477)
+	at com.zaxxer.hikari.pool.HikariPool.access$100(HikariPool.java:71)
+	at com.zaxxer.hikari.pool.HikariPool$PoolEntryCreator.call(HikariPool.java:725)
+	at com.zaxxer.hikari.pool.HikariPool$PoolEntryCreator.call(HikariPool.java:711)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
+	at java.base/java.lang.Thread.run(Thread.java:834)
+Caused by: org.h2.jdbc.JdbcSQLNonTransientConnectionException: La conexión no fue cerrada por la aplicación y esta siendo limpiada (garbage collected)
+The connection was not closed by the application and is garbage collected [90018-200]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:622)
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:429)
+	... 18 more
+2023-02-09 18:48:06 jdbc[94]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Error de Sintaxis en sentencia SQL "SELECT * FROMINGREDIENTE[*]"
+Syntax error in SQL statement "SELECT * FROMINGREDIENTE[*]"; SQL statement:
+SELECT * FROMINGREDIENTE [42000-200]
+2023-02-09 19:14:48 jdbc[94]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Error de Sintaxis en sentencia SQL "SELECT * FROMIMAGEN_RECETA[*]"
+Syntax error in SQL statement "SELECT * FROMIMAGEN_RECETA[*]"; SQL statement:
+SELECT * FROMIMAGEN_RECETA [42000-200]
+2023-02-09 19:14:55 jdbc[94]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Error de Sintaxis en sentencia SQL "SELECT * FROMRECETA[*]"
+Syntax error in SQL statement "SELECT * FROMRECETA[*]"; SQL statement:
+SELECT * FROMRECETA [42000-200]
+2023-02-09 19:22:26 jdbc[94]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Error de Sintaxis en sentencia SQL "SELECT * FROMIMAGEN_RECETA[*]"
+Syntax error in SQL statement "SELECT * FROMIMAGEN_RECETA[*]"; SQL statement:
+SELECT * FROMIMAGEN_RECETA [42000-200]

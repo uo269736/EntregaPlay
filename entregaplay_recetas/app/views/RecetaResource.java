@@ -9,12 +9,13 @@ import org.hibernate.validator.constraints.URL;
 import play.data.validation.Constraints;
 import play.libs.Json;
 
-import javax.persistence.Column;
-import javax.persistence.UniqueConstraint;
+
 import javax.validation.constraints.NotBlank;
 import java.util.List;
 
 public class RecetaResource {
+
+    private Long id;
 
     @JsonProperty("nombre")
     @Constraints.Required
@@ -36,18 +37,23 @@ public class RecetaResource {
     @Constraints.Min(1)
     private Integer tiempo;
 
+    //private ImagenReceta imagen;
 
+    @URL()
+    @Constraints.Required
+    private String imagenUrl;
 
-    private ImagenReceta imagen;
+    /*
+    @Constraints.Required
+    private String descripcionImagen;
+*/
 
-    //@URL(message = "introduce una url correcta")
-    //@Constraints.Required
-    //private String urlImagen;
 
     // Para permitir crear una receta:
     public RecetaResource(){
         super();
     }
+
     public RecetaResource(Receta receta){
         super();
         this.nombre = receta.getNombre();
@@ -55,14 +61,15 @@ public class RecetaResource {
         this.descripcion = receta.getDescripcion();
         this.pasos = receta.getPasos();
         this.tiempo = receta.getTiempo();
-        this.imagen = receta.getImagen();
-        /*
+
+        //this.imagenUrl = receta.getImagen();
+
         ImagenReceta ir = receta.getImagen();
         if (ir != null){
-            this.urlImagen = ir.getUrl();
+            this.imagenUrl = ir.getUrl();
         }
 
-         */
+
     }
 
     public String getNombre() {
@@ -107,24 +114,36 @@ public class RecetaResource {
     }
 
     /*
-
-    public String getUrlImagen() {
-        return urlImagen;
-    }
-
-    public void setUrlImagen(String urlImagen) {
-        this.urlImagen = urlImagen;
-    }
-
-     */
-
     public ImagenReceta getImagen() {
         return imagen;
     }
 
-    public void setImagen(ImagenReceta urlImagen) {
-        this.imagen = urlImagen;
+    public void setImagen(ImagenReceta imagen) {
+        this.imagen = imagen;
     }
+
+     */
+
+
+
+    public String getImagenUrl() {
+        return imagenUrl;
+    }
+
+    public void setImagenUrl(String urlImagen) {
+        this.imagenUrl = urlImagen;
+    }
+
+    /*
+    public String getDescripcionImagen() {
+        return descripcionImagen;
+    }
+
+    public void setDescripcionImagen(String descripcionImagen) {
+        this.descripcionImagen = descripcionImagen;
+    }
+
+     */
 
     public JsonNode toJson() {
         return Json.toJson(this);
@@ -148,14 +167,14 @@ public class RecetaResource {
         rec.setPasos(this.pasos);
         rec.setTiempo(this.tiempo);
 
-        rec.setImagen(this.imagen);
 
-        /*
+        //rec.setImagen(this.imagen);
+
+
         ImagenReceta imagenReceta = new ImagenReceta();
-        imagenReceta.setUrl(this.urlImagen);
+        imagenReceta.setUrl(this.imagenUrl);
         imagenReceta.setParentReceta(rec);
         rec.setImagen(imagenReceta);
-         */
 
 
 
