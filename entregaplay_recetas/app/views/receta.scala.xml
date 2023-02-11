@@ -4,4 +4,8 @@
 <receta>
     <nombre>@(receta.getNombre())</nombre>
     <descripcion>@(receta.getDescripcion())</descripcion>
+    <ingredientes>@(receta.getIngredientes())</ingredientes>
+    <pasos>@(receta.getPasos())</pasos>
+    <tiempo>@(receta.getTiempo())</tiempo>
+    <imagen>@(receta.getImagen())</imagen>
 </receta>

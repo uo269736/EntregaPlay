@@ -11,8 +11,10 @@ import play.i18n.Messages;
 import play.i18n.MessagesApi;
 import play.libs.Json;
 import play.mvc.*;
+import play.twirl.api.Content;
 import views.RecetaResource;
 import views.xml.receta;
+import models.Receta;
 
 import javax.inject.Inject;
 import java.util.List;
@@ -71,15 +73,17 @@ public class RecetaController extends Controller {
             ObjectNode jsonRes = Json.newObject();
             jsonRes.put("id", recetaModel.getId());
 
-            Result res;
-            if(req.accepts("application/json")){
-                res = Results.created(messages.at("receta-creada") + jsonRes);
-            } else if (req.accepts("application/xml")){
-                res = Results.ok(receta.render(recetaModel));
-            } else {
-                res = Results.unsupportedMediaType("No soporta el tipo");
-            }
 
+            Result res;
+            if (req.accepts("application/json")){
+                res = Results.created(recetaResource.toJson());
+            } else if (req.accepts("application/xml")) {
+                Content content = views.xml.receta.render(recetaModel);
+                res = Results.ok(content);
+                //res = Results.created(receta.render(recetaResource.getNombre(), recetaResource.getDescripcion()));
+            } else {
+                res = Results.unsupportedMediaType();
+            }
             return res;
 
 
@@ -100,7 +104,18 @@ public class RecetaController extends Controller {
 
         RecetaResource recetaResource = new RecetaResource(rec);
 
-        return Results.ok(recetaResource.toJson());
+        Result rest = null;
+        if (req.accepts("application/json")){
+            rest = Results.ok(recetaResource.toJson());
+        } else if (req.accepts("application/xml")) {
+            Content content = views.xml.receta.render(rec);
+            return Results.ok(content);
+            //rest = Results.ok(receta.render(recetaResource.getNombre(), recetaResource.getDescripcion()));
+        } else {
+            rest = Results.unsupportedMediaType();
+        }
+        return rest;
+
 
     }
 
