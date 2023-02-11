@@ -5,11 +5,16 @@ import com.fasterxml.jackson.databind.JsonNode;
 import models.ImagenReceta;
 import models.Ingrediente;
 import models.Receta;
+import org.checkerframework.checker.compilermsgs.qual.CompilerMessageKey;
 import org.hibernate.validator.constraints.URL;
+import org.jboss.logging.Message;
+import play.api.i18n.Messages$;
 import play.data.validation.Constraints;
+import play.i18n.MessagesApi;
 import play.libs.Json;
 
 
+import javax.inject.Inject;
 import javax.validation.constraints.NotBlank;
 import java.util.List;
 
@@ -17,9 +22,12 @@ public class RecetaResource {
 
     private Long id;
 
+    @Inject
+    private MessagesApi messagesApi;
+
     @JsonProperty("nombre")
     @Constraints.Required
-    @NotBlank(message = "nombre vacio")
+    @NotBlank(message="nombre vacio")
     private String nombre;
 
     @Constraints.Required
@@ -31,6 +39,7 @@ public class RecetaResource {
 
     @Constraints.Required
     @NotBlank(message = "pasos receta vacio")
+
     private String pasos;
 
     @Constraints.Required

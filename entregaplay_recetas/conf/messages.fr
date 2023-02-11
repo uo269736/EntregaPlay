@@ -1,0 +1,3 @@
+receta-creada= Recette créée avec ID:
+receta-modificada= Recette modifiée avec ID:
+receta-eliminada= La recette avec l'ID a été supprimée:

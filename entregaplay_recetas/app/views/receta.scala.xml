@@ -1,0 +1,7 @@
+@(receta: Receta)
+<?xml version="1.0" encoding="UTF-8"?>
+
+<receta>
+    <nombre>@(receta.getNombre())</nombre>
+    <descripcion>@(receta.getDescripcion())</descripcion>
+</receta>

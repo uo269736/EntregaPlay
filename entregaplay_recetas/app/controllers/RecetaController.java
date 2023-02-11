@@ -7,9 +7,12 @@ import models.Ingrediente;
 import models.Receta;
 import play.data.Form;
 import play.data.FormFactory;
+import play.i18n.Messages;
+import play.i18n.MessagesApi;
 import play.libs.Json;
 import play.mvc.*;
 import views.RecetaResource;
+import views.xml.receta;
 
 import javax.inject.Inject;
 import java.util.List;
@@ -21,6 +24,9 @@ public class RecetaController extends Controller {
 
     @Inject
     private FormFactory formFactory;
+
+    @Inject
+    private MessagesApi messagesApi;
 
     public Result create(Http.Request req) {
         // Los datos de la receta para crearlo vienen en el body
@@ -49,7 +55,7 @@ public class RecetaController extends Controller {
         }
 }
          */
-
+        Messages messages = messagesApi.preferred(req.acceptLanguages());
         Form<RecetaResource> recetaForm = formFactory.form(RecetaResource.class).bindFromRequest(req);
         RecetaResource recetaResource;
 
@@ -64,7 +70,18 @@ public class RecetaController extends Controller {
             // Añadimos el id que va a tener cada receta en nuestro array (Hacer comprobacion de repetidos)
             ObjectNode jsonRes = Json.newObject();
             jsonRes.put("id", recetaModel.getId());
-            return Results.created("Receta creada con ID: " + jsonRes);
+
+            Result res;
+            if(req.accepts("application/json")){
+                res = Results.created(messages.at("receta-creada") + jsonRes);
+            } else if (req.accepts("application/xml")){
+                res = Results.ok(receta.render(recetaModel));
+            } else {
+                res = Results.unsupportedMediaType("No soporta el tipo");
+            }
+
+            return res;
+
 
         }
 
@@ -73,7 +90,7 @@ public class RecetaController extends Controller {
 
 
     public Result get(Integer id, Http.Request req) {
-
+        Messages messages = messagesApi.preferred(req);
         Receta rec = Receta.findById(Long.valueOf(id));
 
         if (rec == null){
@@ -89,7 +106,7 @@ public class RecetaController extends Controller {
 
 
     public Result update(Integer id, Http.Request req) {
-
+        Messages messages = messagesApi.preferred(req);
         Receta rec = Receta.findById(Long.valueOf(id));
 
         Form<RecetaResource> recetaForm = formFactory.form(RecetaResource.class).bindFromRequest(req);
@@ -115,7 +132,7 @@ public class RecetaController extends Controller {
             // Añadimos el id que va a tener cada receta en nuestro array (Hacer comprobacion de repetidos)
             ObjectNode jsonRes = Json.newObject();
             jsonRes.put("id", recetaModel.getId());
-            return Results.created("Receta modificada con ID: " + jsonRes);
+            return Results.created(messages.at("receta-modificada") + jsonRes);
 
         }
 
@@ -123,7 +140,7 @@ public class RecetaController extends Controller {
     }
 
     public Result delete(Integer id, Http.Request req) {
-
+        Messages messages = messagesApi.preferred(req);
         Receta rec = Receta.findById(Long.valueOf(id));
 
         if (rec == null){
@@ -136,7 +153,7 @@ public class RecetaController extends Controller {
            // recetaModel.delete();
 
             rec.delete();
-            return Results.ok("Receta con id: " + id + " eliminada");
+            return Results.ok(messages.at("receta-eliminada") + id);
         }
 
 
@@ -144,7 +161,7 @@ public class RecetaController extends Controller {
     }
 
     public Result getAll(Http.Request req) {
-
+        Messages messages = messagesApi.preferred(req);
         List<Receta> recetas = Receta.findAll();
 
         List<RecetaResource> resources = recetas.stream().map(RecetaResource::new).collect(Collectors.toList());
