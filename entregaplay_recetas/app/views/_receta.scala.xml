@@ -1,0 +1,13 @@
+@(receta: Receta)
+<receta>
+    <nombre>@(receta.getNombre())</nombre>
+    <descripcion>@(receta.getDescripcion())</descripcion>
+    <ingredientes>
+        @for(ingrediente <- receta.getIngredientes()){
+            @_ingrediente(ingrediente)
+        }
+    </ingredientes>
+    <pasos>@(receta.getPasos())</pasos>
+    <tiempo>@(receta.getTiempo())</tiempo>
+    <imagen>@(receta.getImagen().getUrl())</imagen>
+</receta>

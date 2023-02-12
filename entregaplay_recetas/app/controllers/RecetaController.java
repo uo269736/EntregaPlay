@@ -72,24 +72,20 @@ public class RecetaController extends Controller {
             // Añadimos el id que va a tener cada receta en nuestro array (Hacer comprobacion de repetidos)
             ObjectNode jsonRes = Json.newObject();
             jsonRes.put("id", recetaModel.getId());
-
-
+            //ESTO HAY QUE MIRARLO PORQUE NO SE USA Y HAY QUE MIRAR LO DE LOS MENSAJES Y VER SI HAY QUE MANDAR UNA  RECETA O UN RECETARESOURCE
+            //return Results.ok(messages.at("receta-modificada") + jsonRes);
             Result res;
             if (req.accepts("application/json")){
                 res = Results.created(recetaResource.toJson());
             } else if (req.accepts("application/xml")) {
                 Content content = views.xml.receta.render(recetaModel);
-                res = Results.ok(content);
+                res = Results.created(content);
                 //res = Results.created(receta.render(recetaResource.getNombre(), recetaResource.getDescripcion()));
             } else {
                 res = Results.unsupportedMediaType();
             }
             return res;
-
-
         }
-
-
     }
 
 
@@ -101,6 +97,9 @@ public class RecetaController extends Controller {
             // Nos piden uno que no existe
             return Results.notFound();
         }
+
+
+        //return Results.ok(messages.at("receta-modificada") + jsonRes);
 
         RecetaResource recetaResource = new RecetaResource(rec);
 
@@ -115,8 +114,6 @@ public class RecetaController extends Controller {
             rest = Results.unsupportedMediaType();
         }
         return rest;
-
-
     }
 
 
@@ -142,13 +139,22 @@ public class RecetaController extends Controller {
 
             recetaModel.update();
 
-            System.out.println("Receta model: " + recetaModel);
-
             // Añadimos el id que va a tener cada receta en nuestro array (Hacer comprobacion de repetidos)
             ObjectNode jsonRes = Json.newObject();
             jsonRes.put("id", recetaModel.getId());
-            return Results.created(messages.at("receta-modificada") + jsonRes);
+            //return Results.ok(messages.at("receta-modificada") + jsonRes);
 
+            Result res;
+            if (req.accepts("application/json")){
+                res = Results.ok(recetaModel.toJson());
+            } else if (req.accepts("application/xml")) {
+                Content content = views.xml.receta.render(recetaModel);
+                res = Results.ok(content);
+                //res = Results.created(receta.render(recetaResource.getNombre(), recetaResource.getDescripcion()));
+            } else {
+                res = Results.unsupportedMediaType();
+            }
+            return res;
         }
 
 
@@ -168,7 +174,19 @@ public class RecetaController extends Controller {
            // recetaModel.delete();
 
             rec.delete();
-            return Results.ok(messages.at("receta-eliminada") + id);
+            //return Results.ok(messages.at("receta-eliminada") + id);
+
+            Result res;
+            if (req.accepts("application/json")){
+                res = Results.ok(rec.toJson());
+            } else if (req.accepts("application/xml")) {
+                Content content = views.xml.receta.render(rec);
+                res = Results.ok(content);
+                //res = Results.created(receta.render(recetaResource.getNombre(), recetaResource.getDescripcion()));
+            } else {
+                res = Results.unsupportedMediaType();
+            }
+            return res;
         }
 
 
@@ -181,7 +199,19 @@ public class RecetaController extends Controller {
 
         List<RecetaResource> resources = recetas.stream().map(RecetaResource::new).collect(Collectors.toList());
         JsonNode json = Json.toJson(resources);
-        Result res = Results.ok(json);
+        //Result res = Results.ok(json);
+        //return res;
+
+        Result res;
+        if (req.accepts("application/json")){
+            res = Results.ok(json);
+        } else if (req.accepts("application/xml")) {
+            Content content = views.xml.recetas.render(recetas);
+            res = Results.ok(content);
+            //res = Results.created(receta.render(recetaResource.getNombre(), recetaResource.getDescripcion()));
+        } else {
+            res = Results.unsupportedMediaType();
+        }
         return res;
 
     }

@@ -1,11 +1,3 @@
 @(receta: Receta)
 <?xml version="1.0" encoding="UTF-8"?>
-
-<receta>
-    <nombre>@(receta.getNombre())</nombre>
-    <descripcion>@(receta.getDescripcion())</descripcion>
-    <ingredientes>@(receta.getIngredientes())</ingredientes>
-    <pasos>@(receta.getPasos())</pasos>
-    <tiempo>@(receta.getTiempo())</tiempo>
-    <imagen>@(receta.getImagen())</imagen>
-</receta>
+@_receta(receta)
