@@ -16,6 +16,11 @@ libraryDependencies += jdbc
 libraryDependencies += "com.h2database" % "h2" % "1.4.200"
 
 
+// Para utilizar la cache:
+libraryDependencies ++= Seq(
+  ehcache
+)
+
 //libraryDependencies += "org.glassfish.jaxb" % "jaxb-core" % "2.3.0.1"
 //libraryDependencies += "org.glassfish.jaxb" % "jaxb-runtime" % "2.3.2"
 

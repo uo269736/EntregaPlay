@@ -5,6 +5,8 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import models.Ingrediente;
 import models.Receta;
+import play.cache.Cached;
+import play.cache.SyncCacheApi;
 import play.data.Form;
 import play.data.FormFactory;
 import play.i18n.Messages;
@@ -18,6 +20,7 @@ import models.Receta;
 
 import javax.inject.Inject;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 
@@ -29,6 +32,11 @@ public class RecetaController extends Controller {
 
     @Inject
     private MessagesApi messagesApi;
+
+
+    // Cache:
+    @Inject
+    private SyncCacheApi cache;
 
     public Result create(Http.Request req) {
         // Los datos de la receta para crearlo vienen en el body
@@ -193,18 +201,33 @@ public class RecetaController extends Controller {
 
     }
 
+    // @Cached(key="all-recetas-view") --> Cache de 1 Nivel (lo guarda una vez y ya, lo malo es que no cambia al poner json o xml, lo deja como este la primera vez
     public Result getAll(Http.Request req) {
         Messages messages = messagesApi.preferred(req);
-        List<Receta> recetas = Receta.findAll();
 
-        List<RecetaResource> resources = recetas.stream().map(RecetaResource::new).collect(Collectors.toList());
-        JsonNode json = Json.toJson(resources);
-        //Result res = Results.ok(json);
-        //return res;
+        // Cache de la lista de la bbdd de las recetas (Acceso a la bbdd) 2 Nivel
+            // List<Receta> recetas = Receta.findAll();
+        List<Receta> recetas;
+        Optional<Object> optRecetas = cache.get("all-recetas");
+        if (optRecetas.isPresent()) {
+            System.out.println("Valor cacheado");
+            recetas = (List<Receta>) optRecetas.get();
+        } else {
+            System.out.println("Valor NO cacheado");
+            recetas = Receta.findAll();
+            cache.set("all-recetas", recetas);
+        }
+
+
+        List<RecetaResource> resources = recetas.stream().map(RecetaResource::new).collect(Collectors.toList()); // Convertir objeto receta a objeto recetaResource
+
 
         Result res;
         if (req.accepts("application/json")){
+            // Esto se puede cachear (si hay muchas recetas tardaria mucho la respuesta. Por eso se puede tener ya cacheado (Usamos EHCache en play)
+            JsonNode json = Json.toJson(resources);
             res = Results.ok(json);
+
         } else if (req.accepts("application/xml")) {
             Content content = views.xml.recetas.render(recetas);
             res = Results.ok(content);
