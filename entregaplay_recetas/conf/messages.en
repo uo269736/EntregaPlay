@@ -2,3 +2,9 @@ receta-creada= Recipe created with ID:
 receta-modificada= Recipe modified with ID:
 receta-eliminada= The recipe with next ID has been removed:
 error-receta-duplicada=Rece
+
+nombre-receta-vacio= The recipe name is empty
+descripcion-receta-vacio= Recipe description is empty
+pasos-receta-vacio= The recipe steps are empty
+
+nombre-ingrediente-vacio= The ingredient name is empty

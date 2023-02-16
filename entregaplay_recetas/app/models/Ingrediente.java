@@ -24,6 +24,7 @@ public class Ingrediente extends Model{
     @JsonBackReference
     private Receta parentReceta;
 
+
     private String nombre;
     private Integer cantidad;
     private String unidad;

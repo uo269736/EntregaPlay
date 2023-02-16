@@ -27,18 +27,18 @@ public class RecetaResource {
 
     @JsonProperty("nombre")
     @Constraints.Required
-    @NotBlank(message="nombre vacio")
+    @NotBlank(message="nombre-receta-vacio")
     private String nombre;
 
     @Constraints.Required
     private List<Ingrediente> ingredientes;
 
     @Constraints.Required
-    @NotBlank(message = "descripcion receta vacia")
+    @NotBlank(message = "descripcion-receta-vacio")
     private String descripcion;
 
     @Constraints.Required
-    @NotBlank(message = "pasos receta vacio")
+    @NotBlank(message = "pasos-receta-vacio")
 
     private String pasos;
 
