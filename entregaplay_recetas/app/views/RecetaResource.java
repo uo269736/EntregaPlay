@@ -176,16 +176,12 @@ public class RecetaResource {
         rec.setPasos(this.pasos);
         rec.setTiempo(this.tiempo);
 
-
         //rec.setImagen(this.imagen);
-
 
         ImagenReceta imagenReceta = new ImagenReceta();
         imagenReceta.setUrl(this.imagenUrl);
         imagenReceta.setParentReceta(rec);
         rec.setImagen(imagenReceta);
-
-
 
         return rec;
     }
