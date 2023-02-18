@@ -1,6 +1,7 @@
 receta-creada= Receta creada con ID:
 receta-modificada= Receta modificada con ID:
 receta-eliminada= Se ha eliminado la receta con ID:
+receta-no-encontrada= La receta no ha sido encontrada
 
 nombre-receta-vacio= El nombre de la receta está vacío
 descripcion-receta-vacio= La descripción de la receta está vacía

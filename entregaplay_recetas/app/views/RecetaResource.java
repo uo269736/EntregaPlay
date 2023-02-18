@@ -15,7 +15,10 @@ import play.libs.Json;
 
 
 import javax.inject.Inject;
+import javax.validation.Constraint;
+import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
+import java.util.ArrayList;
 import java.util.List;
 
 public class RecetaResource {
@@ -31,7 +34,8 @@ public class RecetaResource {
     private String nombre;
 
     @Constraints.Required
-    private List<Ingrediente> ingredientes;
+    @Valid
+    private List<IngredienteResource> ingredientes;
 
     @Constraints.Required
     @NotBlank(message = "descripcion-receta-vacio")
@@ -39,7 +43,6 @@ public class RecetaResource {
 
     @Constraints.Required
     @NotBlank(message = "pasos-receta-vacio")
-
     private String pasos;
 
     @Constraints.Required
@@ -50,6 +53,8 @@ public class RecetaResource {
     @Constraints.Required
     private String imagenUrl;
 
+    private Long imagenUrlId;
+
     // Para permitir crear una receta:
     public RecetaResource(){
         super();
@@ -57,8 +62,13 @@ public class RecetaResource {
 
     public RecetaResource(Receta receta){
         super();
+        this.id = receta.getId();
         this.nombre = receta.getNombre();
-        this.ingredientes = receta.getIngredientes();
+        this.ingredientes = new ArrayList<>();
+        for(Ingrediente i : receta.getIngredientes()) {
+            IngredienteResource ir = new IngredienteResource(i);
+            this.ingredientes.add(ir);
+        }
         this.descripcion = receta.getDescripcion();
         this.pasos = receta.getPasos();
         this.tiempo = receta.getTiempo();
@@ -68,9 +78,16 @@ public class RecetaResource {
         ImagenReceta ir = receta.getImagen();
         if (ir != null){
             this.imagenUrl = ir.getUrl();
+            this.imagenUrlId = ir.getId();
         }
+    }
 
+    public Long getId() {
+        return id;
+    }
 
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getNombre() {
@@ -82,11 +99,11 @@ public class RecetaResource {
     }
 
 
-    public List<Ingrediente> getIngredientes() {
+    public List<IngredienteResource> getIngredientes() {
         return ingredientes;
     }
 
-    public void setIngredientes(List<Ingrediente> ingredientes) {
+    public void setIngredientes(List<IngredienteResource> ingredientes) {
         this.ingredientes = ingredientes;
     }
 
@@ -152,17 +169,12 @@ public class RecetaResource {
 
     public Receta toModel(){
         Receta rec = new Receta();
+        rec.setId(this.id);
         rec.setNombre(this.nombre);
 
-        // Preguntar si esta bien
-        /*
-        for ( Ingrediente i : this.ingredientes
-             ) {
-            i.setParentReceta(rec);
+        for (IngredienteResource i : this.ingredientes) {
+            rec.addIngredientes(i.toModel());
         }
-
-         */
-        rec.setIngredientes(this.ingredientes);
 
         rec.setDescripcion(this.descripcion);
         rec.setPasos(this.pasos);
@@ -171,6 +183,7 @@ public class RecetaResource {
         //rec.setImagen(this.imagen);
 
         ImagenReceta imagenReceta = new ImagenReceta();
+        imagenReceta.setId(this.imagenUrlId);
         imagenReceta.setUrl(this.imagenUrl);
         imagenReceta.setParentReceta(rec);
         rec.setImagen(imagenReceta);

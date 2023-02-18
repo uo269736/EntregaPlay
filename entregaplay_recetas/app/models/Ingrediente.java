@@ -17,7 +17,6 @@ import java.util.List;
 public class Ingrediente extends Model{
 
     @Id
-    @JsonIgnore
     private Long id;
 
     @ManyToOne

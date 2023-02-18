@@ -1,6 +1,7 @@
 receta-creada= Recipe created with ID:
 receta-modificada= Recipe modified with ID:
 receta-eliminada= The recipe with next ID has been removed:
+receta-no-encontrada= The recipe has not been found
 
 nombre-receta-vacio= The recipe name is empty
 descripcion-receta-vacio= Recipe description is empty

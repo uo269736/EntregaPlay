@@ -42,27 +42,23 @@ public class RecetaController extends Controller {
         // Los datos de la receta para crearlo vienen en el body
         /* JSON DE PRUEBA
 {
-    "nombre":"pasta2",
+    "nombre":"nueva",
     "ingredientes":[
         {
-            "nombre":"pasta",
+            "nombreIngrediente":"inuevo1",
             "cantidad":100,
             "unidad":"g"
         },
         {
-            "nombre":"nata",
-            "cantidad":30,
+            "nombreIngrediente":"inuevo2",
+            "cantidad":200,
             "unidad":"centilitros"
         }
     ],
-    "descripcion":"Receta rica",
-    "pasos":"Primer cueces la pasta y luego echas la nata",
-    "tiempo":10,
-    "imagen":
-        {
-            "url":"123",
-            "descripcionImagen":"Plato de pasta"
-        }
+    "descripcion":"Descripcion nueva",
+    "pasos":"Pasos receta nueva",
+    "tiempo":100,
+    "imagenUrl":"http://xxx.com/imgNueva.png"
 }
          */
         Messages messages = messagesApi.preferred(req.acceptLanguages());
@@ -103,7 +99,7 @@ public class RecetaController extends Controller {
 
         if (rec == null){
             // Nos piden uno que no existe
-            return Results.notFound();
+            return Results.notFound(messages.at("receta-no-encontrada"));
         }
 
 
@@ -129,40 +125,46 @@ public class RecetaController extends Controller {
         Messages messages = messagesApi.preferred(req);
         Receta rec = Receta.findById(Long.valueOf(id));
 
-        Form<RecetaResource> recetaForm = formFactory.form(RecetaResource.class).bindFromRequest(req);
-        RecetaResource recetaResource;
-
-        if (recetaForm.hasErrors()){
-            return Results.badRequest(recetaForm.errorsAsJson());
+        if (rec == null){
+            // Nos piden uno que no existe
+            return Results.notFound(messages.at("receta-no-encontrada"));
         } else {
-            recetaResource = recetaForm.get();
 
-            Receta recetaModel = recetaResource.toModel();
-            recetaModel.setId(rec.getId());
-            recetaModel.getImagen().setId(rec.getImagen().getId());
+            Form<RecetaResource> recetaForm = formFactory.form(RecetaResource.class).bindFromRequest(req);
+            RecetaResource recetaResource;
 
-            for (Integer i = 0; i<rec.getIngredientes().size(); i++ ) {
-                recetaModel.getIngredientes().get(i).setId(rec.getIngredientes().get(i).getId());
-            }
-
-            recetaModel.update();
-
-            // Añadimos el id que va a tener cada receta en nuestro array (Hacer comprobacion de repetidos)
-            ObjectNode jsonRes = Json.newObject();
-            jsonRes.put("id", recetaModel.getId());
-            //return Results.ok(messages.at("receta-modificada") + jsonRes);
-
-            Result res;
-            if (req.accepts("application/json")){
-                res = Results.ok(recetaModel.toJson());
-            } else if (req.accepts("application/xml")) {
-                Content content = views.xml.receta.render(recetaModel);
-                res = Results.ok(content);
-                //res = Results.created(receta.render(recetaResource.getNombre(), recetaResource.getDescripcion()));
+            if (recetaForm.hasErrors()) {
+                return Results.badRequest(recetaForm.errorsAsJson());
             } else {
-                res = Results.unsupportedMediaType();
+                recetaResource = recetaForm.get();
+
+                Receta recetaModel = recetaResource.toModel();
+                recetaModel.setId(rec.getId());
+                recetaModel.getImagen().setId(rec.getImagen().getId());
+
+                for (Integer i = 0; i < rec.getIngredientes().size(); i++) {
+                    recetaModel.getIngredientes().get(i).setId(rec.getIngredientes().get(i).getId());
+                }
+
+                recetaModel.update();
+
+                // Añadimos el id que va a tener cada receta en nuestro array (Hacer comprobacion de repetidos)
+                ObjectNode jsonRes = Json.newObject();
+                jsonRes.put("id", recetaModel.getId());
+                //return Results.ok(messages.at("receta-modificada") + jsonRes);
+
+                Result res;
+                if (req.accepts("application/json")) {
+                    res = Results.ok(recetaModel.toJson());
+                } else if (req.accepts("application/xml")) {
+                    Content content = views.xml.receta.render(recetaModel);
+                    res = Results.ok(content);
+                    //res = Results.created(receta.render(recetaResource.getNombre(), recetaResource.getDescripcion()));
+                } else {
+                    res = Results.unsupportedMediaType();
+                }
+                return res;
             }
-            return res;
         }
 
 
@@ -174,23 +176,21 @@ public class RecetaController extends Controller {
 
         if (rec == null){
             // Nos piden uno que no existe
-            return Results.notFound("La receta no existe");
+            return Results.notFound(messages.at("receta-no-encontrada"));
         } else {
 
-            //RecetaResource recetaResource = new RecetaResource(rec);
-            //Receta recetaModel = recetaResource.toModel();
-           // recetaModel.delete();
+            RecetaResource recetaResource = new RecetaResource(rec);
+            Receta recetaModel = recetaResource.toModel();
+            recetaModel.delete();
 
-            rec.delete();
             //return Results.ok(messages.at("receta-eliminada") + id);
 
             Result res;
             if (req.accepts("application/json")){
-                res = Results.ok(rec.toJson());
+                res = Results.ok(recetaModel.toJson());
             } else if (req.accepts("application/xml")) {
-                Content content = views.xml.receta.render(rec);
+                Content content = views.xml.receta.render(recetaModel);
                 res = Results.ok(content);
-                //res = Results.created(receta.render(recetaResource.getNombre(), recetaResource.getDescripcion()));
             } else {
                 res = Results.unsupportedMediaType();
             }
@@ -238,6 +238,8 @@ public class RecetaController extends Controller {
         return res;
 
     }
+
+
 
 
 

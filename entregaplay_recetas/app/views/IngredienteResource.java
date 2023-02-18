@@ -37,9 +37,18 @@ public class IngredienteResource {
 
     public IngredienteResource(Ingrediente ingrediente){
         super();
+        this.id = ingrediente.getId();
         this.nombreIngrediente = ingrediente.getNombre();
         this.unidad = ingrediente.getUnidad();
         this.cantidad = ingrediente.getCantidad();
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getNombreIngrediente() {
@@ -72,6 +81,7 @@ public class IngredienteResource {
 
     public Ingrediente toModel(){
         Ingrediente ing = new Ingrediente();
+        ing.setId(this.id);
         ing.setNombre(this.nombreIngrediente);
         ing.setCantidad(this.cantidad);
         ing.setUnidad(this.unidad);

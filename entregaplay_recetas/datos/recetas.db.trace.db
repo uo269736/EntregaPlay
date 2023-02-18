@@ -5471,3 +5471,7 @@ Caused by: java.nio.channels.OverlappingFileLockException
 	at java.nio.channels.FileChannel.tryLock(FileChannel.java:1155)
 	at org.h2.mvstore.FileStore.open(FileStore.java:163)
 	... 28 more
+2023-02-18 13:38:12 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Error de Sintaxis en sentencia SQL "SELECT * FROM RECETA IMAGEN_RECETA INGREDIENTE[*]"
+Syntax error in SQL statement "SELECT * FROM RECETA IMAGEN_RECETA INGREDIENTE[*]"; SQL statement:
+SELECT * FROM RECETA IMAGEN_RECETA INGREDIENTE [42000-200]
