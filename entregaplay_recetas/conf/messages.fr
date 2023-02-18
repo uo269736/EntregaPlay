@@ -5,3 +5,9 @@ receta-eliminada= La recette avec l'ID a été supprimée
 nombre-receta-vacio= Le nom de la recette est vide
 descripcion-receta-vacio= La description de la recette est vide
 pasos-receta-vacio= Les étapes de la recette sont vides
+tiempo-receta-vacio=L'heure de la recette est vide
+url-receta-valida=L'URL doit être une URL valide
+
+nombre-ingrediente-vacio= Le nom de l'ingrédient est vide
+unidad-ingrediente-vacio= L'unité d'ingrédient est vide
+cantidad-ingrediente-vacio= La quantité d'ingrédients est vide

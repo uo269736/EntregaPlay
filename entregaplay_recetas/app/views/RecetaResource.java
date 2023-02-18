@@ -43,20 +43,12 @@ public class RecetaResource {
     private String pasos;
 
     @Constraints.Required
-    @Constraints.Min(1)
+    @Constraints.Min(message="tiempo-receta-vacio",value=1)
     private Integer tiempo;
 
-    //private ImagenReceta imagen;
-
-    @URL()
+    @URL(message="url-receta-valida")
     @Constraints.Required
     private String imagenUrl;
-
-    /*
-    @Constraints.Required
-    private String descripcionImagen;
-*/
-
 
     // Para permitir crear una receta:
     public RecetaResource(){

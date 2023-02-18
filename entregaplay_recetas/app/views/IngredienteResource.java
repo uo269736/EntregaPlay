@@ -2,17 +2,13 @@ package views;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.JsonNode;
-import models.ImagenReceta;
 import models.Ingrediente;
-import models.Receta;
-import org.hibernate.validator.constraints.URL;
 import play.data.validation.Constraints;
 import play.i18n.MessagesApi;
 import play.libs.Json;
 
 import javax.inject.Inject;
 import javax.validation.constraints.NotBlank;
-import java.util.List;
 
 public class IngredienteResource {
 
@@ -21,17 +17,17 @@ public class IngredienteResource {
     @Inject
     private MessagesApi messagesApi;
 
-    @JsonProperty("nombre")
+    @JsonProperty("nombreIngrediente")
     @Constraints.Required
-    @NotBlank(message="nombre vacio")
-    private String nombre;
+    @NotBlank(message="nombre-ingrediente-vacio")
+    private String nombreIngrediente;
 
     @Constraints.Required
-    @NotBlank(message = "unidad vacio")
+    @NotBlank(message = "unidad-ingrediente-vacio")
     private String unidad;
 
     @Constraints.Required
-    @Constraints.Min(1)
+    @Constraints.Min(value=1, message="cantidad-ingrediente-vacio")
     private Integer cantidad;
 
 
@@ -41,17 +37,17 @@ public class IngredienteResource {
 
     public IngredienteResource(Ingrediente ingrediente){
         super();
-        this.nombre = ingrediente.getNombre();
+        this.nombreIngrediente = ingrediente.getNombre();
         this.unidad = ingrediente.getUnidad();
         this.cantidad = ingrediente.getCantidad();
     }
 
-    public String getNombre() {
-        return nombre;
+    public String getNombreIngrediente() {
+        return nombreIngrediente;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public void setNombreIngrediente(String nombreIngrediente) {
+        this.nombreIngrediente = nombreIngrediente;
     }
 
     public String getUnidad() {
@@ -76,7 +72,7 @@ public class IngredienteResource {
 
     public Ingrediente toModel(){
         Ingrediente ing = new Ingrediente();
-        ing.setNombre(this.nombre);
+        ing.setNombre(this.nombreIngrediente);
         ing.setCantidad(this.cantidad);
         ing.setUnidad(this.unidad);
 
