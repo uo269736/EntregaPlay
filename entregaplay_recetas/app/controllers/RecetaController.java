@@ -141,7 +141,6 @@ public class RecetaController extends Controller {
                 Receta recetaModel = recetaResource.toModel();
                 recetaModel.setId(rec.getId());
                 recetaModel.getImagen().setId(rec.getImagen().getId());
-
                 for (Integer i = 0; i < rec.getIngredientes().size(); i++) {
                     recetaModel.getIngredientes().get(i).setId(rec.getIngredientes().get(i).getId());
                 }

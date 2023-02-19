@@ -12,11 +12,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(
-        name="RECETA",
-        uniqueConstraints =
-                @UniqueConstraint(columnNames = {"nombre"})
-)
 public class Receta extends Model{
 
     public static final Finder<Long, Receta> find = new Finder<>(Receta.class); //Esto nos permite leer de la bbdd

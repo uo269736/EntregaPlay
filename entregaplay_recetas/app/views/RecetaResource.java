@@ -8,10 +8,12 @@ import models.Receta;
 import org.checkerframework.checker.compilermsgs.qual.CompilerMessageKey;
 import org.hibernate.validator.constraints.URL;
 import org.jboss.logging.Message;
+import org.springframework.validation.annotation.Validated;
 import play.api.i18n.Messages$;
 import play.data.validation.Constraints;
 import play.i18n.MessagesApi;
 import play.libs.Json;
+import validators.NombreRecetaValidator;
 
 
 import javax.inject.Inject;
@@ -31,6 +33,7 @@ public class RecetaResource {
     @JsonProperty("nombre")
     @Constraints.Required
     @NotBlank(message="nombre-receta-vacio")
+    @Constraints.ValidateWith(NombreRecetaValidator.class)
     private String nombre;
 
     @Constraints.Required
@@ -179,8 +182,6 @@ public class RecetaResource {
         rec.setDescripcion(this.descripcion);
         rec.setPasos(this.pasos);
         rec.setTiempo(this.tiempo);
-
-        //rec.setImagen(this.imagen);
 
         ImagenReceta imagenReceta = new ImagenReceta();
         imagenReceta.setId(this.imagenUrlId);

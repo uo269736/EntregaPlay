@@ -4,6 +4,7 @@ receta-eliminada= La recette avec l'ID a été supprimée
 receta-no-encontrada= La recette n'a pas été trouvée
 
 nombre-receta-vacio= Le nom de la recette est vide
+nombre-receta-repetido= Le nom de la recette existe déjà
 descripcion-receta-vacio= La description de la recette est vide
 pasos-receta-vacio= Les étapes de la recette sont vides
 tiempo-receta-vacio=L'heure de la recette est vide

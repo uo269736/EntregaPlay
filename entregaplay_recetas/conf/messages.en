@@ -4,6 +4,7 @@ receta-eliminada= The recipe with next ID has been removed:
 receta-no-encontrada= The recipe has not been found
 
 nombre-receta-vacio= The recipe name is empty
+nombre-receta-repetido= Recipe name already exists
 descripcion-receta-vacio= Recipe description is empty
 pasos-receta-vacio= The recipe steps are empty
 tiempo-receta-vacio=Recipe time is empty

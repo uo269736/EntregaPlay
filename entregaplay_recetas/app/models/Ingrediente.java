@@ -1,17 +1,9 @@
 package models;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.databind.JsonNode;
-import io.ebean.Finder;
 import  io.ebean.Model;
-import play.data.validation.Constraints;
-import play.libs.Json;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 public class Ingrediente extends Model{
@@ -23,8 +15,7 @@ public class Ingrediente extends Model{
     @JsonBackReference
     private Receta parentReceta;
 
-
-    private String nombre;
+    private String nombreIngrediente;
     private Integer cantidad;
     private String unidad;
 
@@ -39,12 +30,12 @@ public class Ingrediente extends Model{
         this.id = id;
     }
 
-    public String getNombre() {
-        return nombre;
+    public String getNombreIngrediente() {
+        return nombreIngrediente;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public void setNombreIngrediente(String nombreIngrediente) {
+        this.nombreIngrediente = nombreIngrediente;
     }
 
     public Integer getCantidad() {

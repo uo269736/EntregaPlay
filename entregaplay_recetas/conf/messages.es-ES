@@ -4,6 +4,7 @@ receta-eliminada= Se ha eliminado la receta con ID:
 receta-no-encontrada= La receta no ha sido encontrada
 
 nombre-receta-vacio= El nombre de la receta está vacío
+nombre-receta-repetido= El nombre de la receta ya existe
 descripcion-receta-vacio= La descripción de la receta está vacía
 pasos-receta-vacio= Los pasos de la receta están vacios
 tiempo-receta-vacio=El tiempo de la receta está vacío

@@ -1,6 +1,6 @@
 @(ingrediente: Ingrediente)
 <ingrediente>
-    <nombre>@(ingrediente.getNombre())</nombre>
+    <nombre>@(ingrediente.getNombreIngrediente())</nombre>
     <cantidad>@(ingrediente.getCantidad())</cantidad>
     <unidad>@(ingrediente.getUnidad())</unidad>
 </ingrediente>
