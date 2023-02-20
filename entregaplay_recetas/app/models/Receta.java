@@ -24,27 +24,30 @@ public class Receta extends Model{
     private List<Ingrediente> ingredientes;
     private String descripcion;
     private String pasos;
-    private Integer tiempo;
+    private Integer tiempoEnMinutos;
     @OneToOne(cascade = CascadeType.ALL)
     @JsonManagedReference
     private ImagenReceta imagen;
 
 
-
     // Métodos de acceso
     public static Receta findById(Long id){
-        //Receta.findById(1)
         return find.byId(id);
     }
 
     public static Receta findByNombre(String nombre){
-        //Receta.findByName(pepe)
         return find.query().where().eq("nombre", nombre).findOne();
     }
 
     public static List<Receta> findAll(){
-        //Receta.findByName(receta1)
         return find.all();
+    }
+
+    public static List<Receta> findRecetaConTiempoMenorA(Integer tiempoEnMinutos){
+        return find.query()
+                .where()
+                .le("tiempoEnMinutos", tiempoEnMinutos)
+                .findList();
     }
 
 
@@ -88,12 +91,12 @@ public class Receta extends Model{
         this.pasos = pasos;
     }
 
-    public Integer getTiempo() {
-        return tiempo;
+    public Integer getTiempoEnMinutos() {
+        return tiempoEnMinutos;
     }
 
-    public void setTiempo(Integer tiempo) {
-        this.tiempo = tiempo;
+    public void setTiempoEnMinutos(Integer tiempoEnMinutos) {
+        this.tiempoEnMinutos = tiempoEnMinutos;
     }
 
 

@@ -8,6 +8,6 @@
         }
     </ingredientes>
     <pasos>@(receta.getPasos())</pasos>
-    <tiempo>@(receta.getTiempo())</tiempo>
+    <tiempo>@(receta.getTiempoEnMinutos())</tiempo>
     <imagen>@(receta.getImagen().getUrl())</imagen>
 </receta>

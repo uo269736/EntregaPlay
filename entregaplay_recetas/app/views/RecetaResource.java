@@ -5,11 +5,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import models.ImagenReceta;
 import models.Ingrediente;
 import models.Receta;
-import org.checkerframework.checker.compilermsgs.qual.CompilerMessageKey;
 import org.hibernate.validator.constraints.URL;
-import org.jboss.logging.Message;
-import org.springframework.validation.annotation.Validated;
-import play.api.i18n.Messages$;
 import play.data.validation.Constraints;
 import play.i18n.MessagesApi;
 import play.libs.Json;
@@ -17,7 +13,6 @@ import validators.NombreRecetaValidator;
 
 
 import javax.inject.Inject;
-import javax.validation.Constraint;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import java.util.ArrayList;
@@ -50,7 +45,7 @@ public class RecetaResource {
 
     @Constraints.Required
     @Constraints.Min(message="tiempo-receta-vacio",value=1)
-    private Integer tiempo;
+    private Integer tiempoEnMinutos;
 
     @URL(message="url-receta-valida")
     @Constraints.Required
@@ -74,7 +69,7 @@ public class RecetaResource {
         }
         this.descripcion = receta.getDescripcion();
         this.pasos = receta.getPasos();
-        this.tiempo = receta.getTiempo();
+        this.tiempoEnMinutos = receta.getTiempoEnMinutos();
 
         //this.imagenUrl = receta.getImagen();
 
@@ -126,12 +121,12 @@ public class RecetaResource {
         this.pasos = pasos;
     }
 
-    public Integer getTiempo() {
-        return tiempo;
+    public Integer getTiempoEnMinutos() {
+        return tiempoEnMinutos;
     }
 
-    public void setTiempo(Integer tiempo) {
-        this.tiempo = tiempo;
+    public void setTiempoEnMinutos(Integer tiempoEnMinutos) {
+        this.tiempoEnMinutos = tiempoEnMinutos;
     }
 
     /*
@@ -181,7 +176,7 @@ public class RecetaResource {
 
         rec.setDescripcion(this.descripcion);
         rec.setPasos(this.pasos);
-        rec.setTiempo(this.tiempo);
+        rec.setTiempoEnMinutos(this.tiempoEnMinutos);
 
         ImagenReceta imagenReceta = new ImagenReceta();
         imagenReceta.setId(this.imagenUrlId);

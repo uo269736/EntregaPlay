@@ -238,6 +238,25 @@ public class RecetaController extends Controller {
 
     }
 
+    public Result getRecetasConTiempoMenorA(Integer tiempoEnMinutos, Http.Request req) {
+        Messages messages = messagesApi.preferred(req);
+        List<Receta> recetas = Receta.findRecetaConTiempoMenorA(tiempoEnMinutos);
+
+        List<RecetaResource> resources = recetas.stream().map(RecetaResource::new).collect(Collectors.toList()); // Convertir objeto receta a objeto recetaResource
+
+        Result res;
+        if (req.accepts("application/json")){
+            JsonNode json = Json.toJson(resources);
+            res = Results.ok(json);
+        } else if (req.accepts("application/xml")) {
+            Content content = views.xml.recetas.render(recetas);
+            res = Results.ok(content);
+        } else {
+            res = Results.unsupportedMediaType();
+        }
+        return res;
+    }
+
 
 
 

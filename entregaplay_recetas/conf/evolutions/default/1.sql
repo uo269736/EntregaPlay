@@ -24,7 +24,7 @@ create table receta (
   nombre                        varchar(255),
   descripcion                   varchar(255),
   pasos                         varchar(255),
-  tiempo                        integer,
+  tiempo_en_minutos             integer,
   imagen_id                     bigint,
   constraint uq_receta_imagen_id unique (imagen_id),
   constraint pk_receta primary key (id)
