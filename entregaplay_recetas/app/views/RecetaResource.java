@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.JsonNode;
 import models.ImagenReceta;
 import models.Ingrediente;
+import models.Propiedad;
 import models.Receta;
 import org.hibernate.validator.constraints.URL;
 import play.data.validation.Constraints;
@@ -53,6 +54,10 @@ public class RecetaResource {
 
     private Long imagenUrlId;
 
+    @Constraints.Required
+    @Valid
+    private List<PropiedadResource> propiedades;
+
     // Para permitir crear una receta:
     public RecetaResource(){
         super();
@@ -77,6 +82,12 @@ public class RecetaResource {
         if (ir != null){
             this.imagenUrl = ir.getUrl();
             this.imagenUrlId = ir.getId();
+        }
+
+        this.propiedades = new ArrayList<>();
+        for(Propiedad p : receta.getPropiedades()) {
+            PropiedadResource pr = new PropiedadResource(p);
+            this.propiedades.add(pr);
         }
     }
 
@@ -140,8 +151,6 @@ public class RecetaResource {
 
      */
 
-
-
     public String getImagenUrl() {
         return imagenUrl;
     }
@@ -150,16 +159,21 @@ public class RecetaResource {
         this.imagenUrl = urlImagen;
     }
 
-    /*
-    public String getDescripcionImagen() {
-        return descripcionImagen;
+    public Long getImagenUrlId() {
+        return imagenUrlId;
     }
 
-    public void setDescripcionImagen(String descripcionImagen) {
-        this.descripcionImagen = descripcionImagen;
+    public void setImagenUrlId(Long imagenUrlId) {
+        this.imagenUrlId = imagenUrlId;
     }
 
-     */
+    public List<PropiedadResource> getPropiedades() {
+        return propiedades;
+    }
+
+    public void setPropiedades(List<PropiedadResource> propiedades) {
+        this.propiedades = propiedades;
+    }
 
     public JsonNode toJson() {
         return Json.toJson(this);
@@ -183,6 +197,10 @@ public class RecetaResource {
         imagenReceta.setUrl(this.imagenUrl);
         imagenReceta.setParentReceta(rec);
         rec.setImagen(imagenReceta);
+
+        for (PropiedadResource p : this.propiedades) {
+            rec.addPropiedad(p.toModel());
+        }
 
         return rec;
     }

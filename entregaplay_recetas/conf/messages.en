@@ -13,3 +13,5 @@ url-receta-valida=The URL must be a valid URL
 nombre-ingrediente-vacio= The ingredient name is empty
 unidad-ingrediente-vacio= The ingredient unit is empty
 cantidad-ingrediente-vacio= Ingredient quantity is empty
+
+nombre-propiedad-vacio= Property name is empty

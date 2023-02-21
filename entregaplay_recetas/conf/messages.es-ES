@@ -13,3 +13,5 @@ url-receta-valida=La URL debe ser una URL válida
 nombre-ingrediente-vacio= El nombre del ingrediente está vacío
 unidad-ingrediente-vacio= La unidad del ingrediente está vacío
 cantidad-ingrediente-vacio= La cantidad del ingrediente está vacía
+
+nombre-propiedad-vacio= El nombre de la propiedad está vacío

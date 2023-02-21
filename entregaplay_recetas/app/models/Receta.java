@@ -29,6 +29,9 @@ public class Receta extends Model{
     @JsonManagedReference
     private ImagenReceta imagen;
 
+    @ManyToMany(cascade = CascadeType.ALL)
+    private List<Propiedad> propiedades;
+
 
     // Métodos de acceso
     public static Receta findById(Long id){
@@ -49,8 +52,6 @@ public class Receta extends Model{
                 .le("tiempoEnMinutos", tiempoEnMinutos)
                 .findList();
     }
-
-
 
     // Getters & Setters
     public Long getId() {
@@ -114,6 +115,22 @@ public class Receta extends Model{
         }
         this.ingredientes.add(ingrediente);
         ingrediente.setParentReceta(this);
+    }
+
+    public List<Propiedad> getPropiedades() {
+        return propiedades;
+    }
+
+    public void setPropiedades(List<Propiedad> propiedades) {
+        this.propiedades = propiedades;
+    }
+
+    public void addPropiedad (Propiedad propiedad){
+        if(this.propiedades == null){
+            this.propiedades = new ArrayList<>();
+        }
+        this.propiedades.add(propiedad);
+        propiedad.addReceta(this);
     }
 
 

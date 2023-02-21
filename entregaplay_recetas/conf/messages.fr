@@ -13,3 +13,5 @@ url-receta-valida=L'URL doit être une URL valide
 nombre-ingrediente-vacio= Le nom de l'ingrédient est vide
 unidad-ingrediente-vacio= L'unité d'ingrédient est vide
 cantidad-ingrediente-vacio= La quantité d'ingrédients est vide
+
+nombre-propiedad-vacio= Le nom de la propriété est vide

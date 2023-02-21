@@ -1,0 +1,4 @@
+@(propiedad: Propiedad)
+<propiedad>
+    <nombre>@(propiedad.getNombrePropiedad())</nombre>
+</propiedad>

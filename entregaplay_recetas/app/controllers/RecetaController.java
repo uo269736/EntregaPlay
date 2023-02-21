@@ -119,8 +119,6 @@ public class RecetaController extends Controller {
         }
         return rest;
     }
-
-
     public Result update(Integer id, Http.Request req) {
         Messages messages = messagesApi.preferred(req);
         Receta rec = Receta.findById(Long.valueOf(id));
@@ -165,8 +163,6 @@ public class RecetaController extends Controller {
                 return res;
             }
         }
-
-
     }
 
     public Result delete(Integer id, Http.Request req) {
@@ -182,8 +178,6 @@ public class RecetaController extends Controller {
             Receta recetaModel = recetaResource.toModel();
             recetaModel.delete();
 
-            //return Results.ok(messages.at("receta-eliminada") + id);
-
             Result res;
             if (req.accepts("application/json")){
                 res = Results.ok(recetaModel.toJson());
@@ -195,8 +189,6 @@ public class RecetaController extends Controller {
             }
             return res;
         }
-
-
 
     }
 
