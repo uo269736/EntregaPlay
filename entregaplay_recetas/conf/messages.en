@@ -6,6 +6,7 @@ receta-no-encontrada= The recipe has not been found
 nombre-receta-vacio= The recipe name is empty
 nombre-receta-repetido= Recipe name already exists
 descripcion-receta-vacio= Recipe description is empty
+descripcion-receta-incompleta= The description of the recipe is incomplete
 pasos-receta-vacio= The recipe steps are empty
 tiempo-receta-vacio=Recipe time is empty
 url-receta-valida=The URL must be a valid URL

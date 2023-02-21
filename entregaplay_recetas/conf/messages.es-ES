@@ -6,6 +6,7 @@ receta-no-encontrada= La receta no ha sido encontrada
 nombre-receta-vacio= El nombre de la receta está vacío
 nombre-receta-repetido= El nombre de la receta ya existe
 descripcion-receta-vacio= La descripción de la receta está vacía
+descripcion-receta-incompleta= La descripcion de la receta está incompleta
 pasos-receta-vacio= Los pasos de la receta están vacios
 tiempo-receta-vacio=El tiempo de la receta está vacío
 url-receta-valida=La URL debe ser una URL válida

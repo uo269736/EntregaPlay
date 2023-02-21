@@ -1,5 +1,7 @@
 package controllers;
 
+import actions.Timed;
+import actions.TimerAction;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -38,6 +40,7 @@ public class RecetaController extends Controller {
     @Inject
     private SyncCacheApi cache;
 
+    @Timed
     public Result create(Http.Request req) {
         // Los datos de la receta para crearlo vienen en el body
         /* JSON DE PRUEBA
@@ -119,6 +122,8 @@ public class RecetaController extends Controller {
         }
         return rest;
     }
+
+    @Timed
     public Result update(Integer id, Http.Request req) {
         Messages messages = messagesApi.preferred(req);
         Receta rec = Receta.findById(Long.valueOf(id));
@@ -165,6 +170,7 @@ public class RecetaController extends Controller {
         }
     }
 
+    @Timed
     public Result delete(Integer id, Http.Request req) {
         Messages messages = messagesApi.preferred(req);
         Receta rec = Receta.findById(Long.valueOf(id));
@@ -193,6 +199,7 @@ public class RecetaController extends Controller {
     }
 
     // @Cached(key="all-recetas-view") --> Cache de 1 Nivel (lo guarda una vez y ya, lo malo es que no cambia al poner json o xml, lo deja como este la primera vez
+    @Timed
     public Result getAll(Http.Request req) {
         Messages messages = messagesApi.preferred(req);
 

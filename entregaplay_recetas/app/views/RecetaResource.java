@@ -10,6 +10,7 @@ import org.hibernate.validator.constraints.URL;
 import play.data.validation.Constraints;
 import play.i18n.MessagesApi;
 import play.libs.Json;
+import validators.DescripcionRecetaValidator;
 import validators.NombreRecetaValidator;
 
 
@@ -38,6 +39,7 @@ public class RecetaResource {
 
     @Constraints.Required
     @NotBlank(message = "descripcion-receta-vacio")
+    @Constraints.ValidateWith(DescripcionRecetaValidator.class)
     private String descripcion;
 
     @Constraints.Required

@@ -10,25 +10,26 @@ import views.RecetaResource;
 import javax.inject.Inject;
 import java.util.List;
 
-public class  NombreRecetaValidator extends Constraints.Validator{
+public class DescripcionRecetaValidator extends Constraints.Validator{
 
     @Override
     public boolean isValid(Object object) {
         if(object instanceof String){
-            String nombre = (String) object;
-            List<Receta> recetas = Receta.findAll();
-            for(Receta r : recetas) {
-                if(r.getNombre().trim().equals(nombre.trim())) {
-                    return false;
+            String descripcion = (String) object;
+
+            if (descripcion.contains(" ")){
+                if (descripcion.length() >= 20){
+                    return true;
                 }
             }
-            return true;
+
         }
         return false;
     }
 
     @Override
     public F.Tuple<String, Object[]> getErrorMessageKey() {
-        return new F.Tuple<>("nombre-receta-repetido",new Object[]{""});
+        return new F.Tuple<>("descripcion-receta-incompleta",new Object[]{""});
     }
+
 }
