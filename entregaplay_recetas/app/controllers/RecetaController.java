@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import models.Ingrediente;
+import models.Propiedad;
 import models.Receta;
 import play.cache.Cached;
 import play.cache.SyncCacheApi;
@@ -16,11 +17,13 @@ import play.i18n.MessagesApi;
 import play.libs.Json;
 import play.mvc.*;
 import play.twirl.api.Content;
+import views.PropiedadResource;
 import views.RecetaResource;
 import views.xml.receta;
 import models.Receta;
 
 import javax.inject.Inject;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -71,23 +74,43 @@ public class RecetaController extends Controller {
         if (recetaForm.hasErrors()){
             return Results.badRequest(recetaForm.errorsAsJson());
         } else {
+            List<Propiedad> propiedadesBD = Propiedad.findAll();
             recetaResource = recetaForm.get();
 
             Receta recetaModel = recetaResource.toModel();
+            List<Propiedad> propiedadesReceta = recetaModel.getPropiedades();
+            recetaModel.setPropiedades(new ArrayList<Propiedad>());
             recetaModel.save();
+
+            Boolean existe = false;
+            for(Propiedad p: propiedadesReceta){
+                for(Propiedad pbd: propiedadesBD) {
+                    if (p.getNombrePropiedad().trim().toLowerCase().equals(pbd.getNombrePropiedad().trim().toLowerCase())) {
+                        pbd.addReceta(recetaModel);
+                        pbd.update();
+                        existe = true;
+                        break;
+                    }else{
+                        existe = false;
+                    }
+                }
+                if(existe==false){
+                    p.save();
+                }
+                existe=false;
+            }
+
+            recetaModel.setPropiedades(propiedadesReceta);
 
             // Añadimos el id que va a tener cada receta en nuestro array (Hacer comprobacion de repetidos)
             ObjectNode jsonRes = Json.newObject();
             jsonRes.put("id", recetaModel.getId());
-            //ESTO HAY QUE MIRARLO PORQUE NO SE USA Y HAY QUE MIRAR LO DE LOS MENSAJES Y VER SI HAY QUE MANDAR UNA  RECETA O UN RECETARESOURCE
-            //return Results.ok(messages.at("receta-modificada") + jsonRes);
             Result res;
             if (req.accepts("application/json")){
                 res = Results.created(recetaResource.toJson());
             } else if (req.accepts("application/xml")) {
                 Content content = views.xml.receta.render(recetaModel);
                 res = Results.created(content);
-                //res = Results.created(receta.render(recetaResource.getNombre(), recetaResource.getDescripcion()));
             } else {
                 res = Results.unsupportedMediaType();
             }

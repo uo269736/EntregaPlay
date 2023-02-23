@@ -19,6 +19,8 @@ public class Ingrediente extends Model{
     private Integer cantidad;
     private String unidad;
 
+
+
     // métodos de acceso
 
     // getters & setters
