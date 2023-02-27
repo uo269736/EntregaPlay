@@ -102,19 +102,7 @@ public class RecetaController extends Controller {
 
             recetaModel.setPropiedades(propiedadesReceta);
 
-            // Añadimos el id que va a tener cada receta en nuestro array (Hacer comprobacion de repetidos)
-            ObjectNode jsonRes = Json.newObject();
-            jsonRes.put("id", recetaModel.getId());
-            Result res;
-            if (req.accepts("application/json")){
-                res = Results.created(recetaResource.toJson());
-            } else if (req.accepts("application/xml")) {
-                Content content = views.xml.receta.render(recetaModel);
-                res = Results.created(content);
-            } else {
-                res = Results.unsupportedMediaType();
-            }
-            return res;
+            return compruebaJsonXML(recetaModel,req);
         }
     }
 
@@ -128,22 +116,7 @@ public class RecetaController extends Controller {
             return Results.notFound(messages.at("receta-no-encontrada"));
         }
 
-
-        //return Results.ok(messages.at("receta-modificada") + jsonRes);
-
-        RecetaResource recetaResource = new RecetaResource(rec);
-
-        Result rest = null;
-        if (req.accepts("application/json")){
-            rest = Results.ok(recetaResource.toJson());
-        } else if (req.accepts("application/xml")) {
-            Content content = views.xml.receta.render(rec);
-            return Results.ok(content);
-            //rest = Results.ok(receta.render(recetaResource.getNombre(), recetaResource.getDescripcion()));
-        } else {
-            rest = Results.unsupportedMediaType();
-        }
-        return rest;
+        return compruebaJsonXML(rec,req);
     }
 
     @Timed
@@ -173,22 +146,7 @@ public class RecetaController extends Controller {
 
                 recetaModel.update();
 
-                // Añadimos el id que va a tener cada receta en nuestro array (Hacer comprobacion de repetidos)
-                ObjectNode jsonRes = Json.newObject();
-                jsonRes.put("id", recetaModel.getId());
-                //return Results.ok(messages.at("receta-modificada") + jsonRes);
-
-                Result res;
-                if (req.accepts("application/json")) {
-                    res = Results.ok(recetaModel.toJson());
-                } else if (req.accepts("application/xml")) {
-                    Content content = views.xml.receta.render(recetaModel);
-                    res = Results.ok(content);
-                    //res = Results.created(receta.render(recetaResource.getNombre(), recetaResource.getDescripcion()));
-                } else {
-                    res = Results.unsupportedMediaType();
-                }
-                return res;
+                return compruebaJsonXML(recetaModel,req);
             }
         }
     }
@@ -207,16 +165,7 @@ public class RecetaController extends Controller {
             Receta recetaModel = recetaResource.toModel();
             recetaModel.delete();
 
-            Result res;
-            if (req.accepts("application/json")){
-                res = Results.ok(recetaModel.toJson());
-            } else if (req.accepts("application/xml")) {
-                Content content = views.xml.receta.render(recetaModel);
-                res = Results.ok(content);
-            } else {
-                res = Results.unsupportedMediaType();
-            }
-            return res;
+            return compruebaJsonXML(recetaModel,req);
         }
 
     }
@@ -227,7 +176,6 @@ public class RecetaController extends Controller {
         Messages messages = messagesApi.preferred(req);
 
         // Cache de la lista de la bbdd de las recetas (Acceso a la bbdd) 2 Nivel
-            // List<Receta> recetas = Receta.findAll();
         List<Receta> recetas;
         Optional<Object> optRecetas = cache.get("all-recetas");
         if (optRecetas.isPresent()) {
@@ -239,24 +187,7 @@ public class RecetaController extends Controller {
             cache.set("all-recetas", recetas);
         }
 
-
-        List<RecetaResource> resources = recetas.stream().map(RecetaResource::new).collect(Collectors.toList()); // Convertir objeto receta a objeto recetaResource
-
-
-        Result res;
-        if (req.accepts("application/json")){
-            // Esto se puede cachear (si hay muchas recetas tardaria mucho la respuesta. Por eso se puede tener ya cacheado (Usamos EHCache en play)
-            JsonNode json = Json.toJson(resources);
-            res = Results.ok(json);
-
-        } else if (req.accepts("application/xml")) {
-            Content content = views.xml.recetas.render(recetas);
-            res = Results.ok(content);
-            //res = Results.created(receta.render(recetaResource.getNombre(), recetaResource.getDescripcion()));
-        } else {
-            res = Results.unsupportedMediaType();
-        }
-        return res;
+        return compruebaJsonXML(recetas,req);
 
     }
 
@@ -264,8 +195,31 @@ public class RecetaController extends Controller {
         Messages messages = messagesApi.preferred(req);
         List<Receta> recetas = Receta.findRecetaConTiempoMenorA(tiempoEnMinutos);
 
-        List<RecetaResource> resources = recetas.stream().map(RecetaResource::new).collect(Collectors.toList()); // Convertir objeto receta a objeto recetaResource
+        return compruebaJsonXML(recetas,req);
+    }
 
+    public Result getRecetasConIngrediente(String nombreIngrediente, Http.Request req) {
+        Messages messages = messagesApi.preferred(req);
+        List<Receta> recetas = Receta.findbyIngrediente(nombreIngrediente);
+
+        return compruebaJsonXML(recetas,req);
+    }
+
+    private Result compruebaJsonXML(Receta receta, Http.Request req){
+        Result res;
+        if (req.accepts("application/json")){
+            res = Results.ok(receta.toJson());
+        } else if (req.accepts("application/xml")) {
+            Content content = views.xml.receta.render(receta);
+            res = Results.ok(content);
+        } else {
+            res = Results.unsupportedMediaType();
+        }
+        return res;
+    }
+
+    private Result compruebaJsonXML(List<Receta> recetas, Http.Request req){
+        List<RecetaResource> resources = recetas.stream().map(RecetaResource::new).collect(Collectors.toList()); // Convertir objeto receta a objeto recetaResource
         Result res;
         if (req.accepts("application/json")){
             JsonNode json = Json.toJson(resources);

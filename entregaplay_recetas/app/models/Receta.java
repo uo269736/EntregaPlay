@@ -53,6 +53,14 @@ public class Receta extends Model{
                 .findList();
     }
 
+    public static List<Receta> findbyIngrediente(String nombreIngrediente){
+        return find.query()
+                .where()
+                .in("id", Ingrediente.findParentRecetabyNombreIngrediente(nombreIngrediente))
+                .findList();
+        //"SELECT * FROM RECETA WHERE ID IN (select PARENT_RECETA_ID from INGREDIENTE WHERE nombre_Ingrediente='"+nombreIngrediente+"')"
+    }
+
     // Getters & Setters
     public Long getId() {
         return id;

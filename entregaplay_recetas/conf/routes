@@ -32,5 +32,9 @@ GET     /recetas                    controllers.RecetaController.getAll(req: Req
 # Ejemplo de url: http://host/recetas/tiempo/tiempo
 GET     /recetas/tiempo/:tiempo                   controllers.RecetaController.getRecetasConTiempoMenorA(tiempo: Integer, req: Request)
 
+# Filtrar recetas por nombre de ingrediente
+# Ejemplo de url: http://host/recetas/ingrediente/nombreIngrediente
+GET     /recetas/ingrediente/:nombreIngrediente                   controllers.RecetaController.getRecetasConIngrediente(nombreIngrediente: String, req: Request)
+
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)

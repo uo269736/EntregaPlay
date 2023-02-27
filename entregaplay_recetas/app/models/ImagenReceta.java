@@ -27,10 +27,6 @@ public class ImagenReceta extends Model {
 
     private String url;
 
-//    private String descripcionImagen;
-
-
-
     public Receta getParentReceta() {
         return parentReceta;
     }

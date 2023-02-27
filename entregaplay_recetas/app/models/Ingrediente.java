@@ -1,12 +1,17 @@
 package models;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import io.ebean.Finder;
 import  io.ebean.Model;
+import io.ebeaninternal.server.util.Str;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 public class Ingrediente extends Model{
+
+    public static final Finder<Long, Ingrediente> find = new Finder<>(Ingrediente.class); //Esto nos permite leer de la bbdd
 
     @Id
     private Long id;
@@ -22,6 +27,15 @@ public class Ingrediente extends Model{
 
 
     // métodos de acceso
+    public static List<Long> findParentRecetabyNombreIngrediente(String nombreIngrediente){
+        return find.query()
+                .select("parentReceta")
+                .setDistinct(true)
+                .where()
+                .eq("nombreIngrediente", nombreIngrediente)
+                .findSingleAttributeList();
+    }
+
 
     // getters & setters
     public Long getId() {
