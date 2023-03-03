@@ -1,6 +1,7 @@
 package models;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.ebean.Finder;
 import io.ebean.Model;
 
@@ -20,9 +21,9 @@ public class Propiedad extends Model {
 
     private String nombrePropiedad;
 
+    @JsonBackReference
     @ManyToMany(mappedBy = "propiedades")
     private Set<Receta> recetas;
-
 
     // Métodos de acceso
 

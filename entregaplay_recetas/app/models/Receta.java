@@ -30,6 +30,7 @@ public class Receta extends Model{
     private ImagenReceta imagen;
 
     @ManyToMany(cascade = CascadeType.ALL)
+    @JsonManagedReference
     private List<Propiedad> propiedades;
 
 
@@ -140,8 +141,6 @@ public class Receta extends Model{
         this.propiedades.add(propiedad);
         propiedad.addReceta(this);
     }
-
-
     public JsonNode toJson() {
         return Json.toJson(this);
     }
