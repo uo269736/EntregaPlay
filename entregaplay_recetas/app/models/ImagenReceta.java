@@ -19,7 +19,6 @@ public class ImagenReceta extends Model {
 
     @OneToOne(mappedBy = "imagen")
     @JsonBackReference
-    //@JsonBackReference
     private Receta parentReceta;
 
     @Id
@@ -27,6 +26,7 @@ public class ImagenReceta extends Model {
 
     private String url;
 
+    // Getters & Setters
     public Receta getParentReceta() {
         return parentReceta;
     }

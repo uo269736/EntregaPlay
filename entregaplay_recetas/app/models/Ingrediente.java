@@ -24,9 +24,11 @@ public class Ingrediente extends Model{
     private Integer cantidad;
     private String unidad;
 
-
-
-    // métodos de acceso
+    /**
+     * Método para buscar el id de las recetas que contengan los ingredientes especificados
+     * @param nombreIngrediente Nombre del ingrediente que debe contener
+     * @return Lista de ids de aquellas recetas que contengan el ingrediente especificado
+     */
     public static List<Long> findParentRecetabyNombreIngrediente(String nombreIngrediente){
         return find.query()
                 .select("parentReceta")
@@ -37,7 +39,7 @@ public class Ingrediente extends Model{
     }
 
 
-    // getters & setters
+    // Getters & Setters
     public Long getId() {
         return id;
     }
@@ -77,7 +79,5 @@ public class Ingrediente extends Model{
     public void setParentReceta(Receta parentReceta) {
         this.parentReceta = parentReceta;
     }
-
-
 
 }

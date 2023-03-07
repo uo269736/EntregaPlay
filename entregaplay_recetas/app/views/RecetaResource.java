@@ -60,7 +60,6 @@ public class RecetaResource {
     @Valid
     private List<PropiedadResource> propiedades;
 
-    // Para permitir crear una receta:
     public RecetaResource(){
         super();
     }
@@ -77,8 +76,6 @@ public class RecetaResource {
         this.descripcion = receta.getDescripcion();
         this.pasos = receta.getPasos();
         this.tiempoEnMinutos = receta.getTiempoEnMinutos();
-
-        //this.imagenUrl = receta.getImagen();
 
         ImagenReceta ir = receta.getImagen();
         if (ir != null){
@@ -141,17 +138,6 @@ public class RecetaResource {
     public void setTiempoEnMinutos(Integer tiempoEnMinutos) {
         this.tiempoEnMinutos = tiempoEnMinutos;
     }
-
-    /*
-    public ImagenReceta getImagen() {
-        return imagen;
-    }
-
-    public void setImagen(ImagenReceta imagen) {
-        this.imagen = imagen;
-    }
-
-     */
 
     public String getImagenUrl() {
         return imagenUrl;

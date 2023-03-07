@@ -12,6 +12,11 @@ import java.util.List;
 
 public class  NombreRecetaValidator extends Constraints.Validator{
 
+    /**
+     * Método que comprueba si ya existe una receta con el mismo nombre
+     * @param object La receta a comprobar
+     * @return Devuelve true si no hay recetas con el mismo nombre y false si ya existe una
+     */
     @Override
     public boolean isValid(Object object) {
         if(object instanceof String){
@@ -27,6 +32,10 @@ public class  NombreRecetaValidator extends Constraints.Validator{
         return false;
     }
 
+    /**
+     * Devuelve un mensaje de error en caso de qué la receta no sea válido
+     * @return Mensaje de error
+     */
     @Override
     public F.Tuple<String, Object[]> getErrorMessageKey() {
         return new F.Tuple<>("nombre-receta-repetido",new Object[]{""});

@@ -25,12 +25,16 @@ public class Propiedad extends Model {
     @ManyToMany(mappedBy = "propiedades")
     private Set<Receta> recetas;
 
-    // Métodos de acceso
 
+    /**
+     * Método para obtener todas las propiedades del sistema
+     * @return Lista de propiedades
+     */
     public static List<Propiedad> findAll(){
         return find.all();
     }
 
+    // Getters & Setters
     public Long getId() {
         return id;
     }
@@ -60,6 +64,5 @@ public class Propiedad extends Model {
             this.recetas = new HashSet<>();
         }
         this.recetas.add(receta);
-        //receta.addPropiedad(this);
     }
 }

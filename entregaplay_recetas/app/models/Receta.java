@@ -33,20 +33,37 @@ public class Receta extends Model{
     @JsonManagedReference
     private List<Propiedad> propiedades;
 
-
-    // Métodos de acceso
+    /**
+     * Método para buscar recetas por id
+     * @param id Id de la receta que se desea encontrar
+     * @return Receta con el id especificado
+     */
     public static Receta findById(Long id){
         return find.byId(id);
     }
 
+    /**
+     * Método para buscar recetas por nombre
+     * @param nombre Nombre de la receta que se desea encontrar
+     * @return Receta con el nombre especificado
+     */
     public static Receta findByNombre(String nombre){
         return find.query().where().eq("nombre", nombre).findOne();
     }
 
+    /**
+     * Método para obtener todas las recetas del sistema
+     * @return Lista de recetas
+     */
     public static List<Receta> findAll(){
         return find.all();
     }
 
+    /**
+     * Método para buscar recetas por tiempo
+     * @param tiempoEnMinutos Tiempo de realización de la receta
+     * @return Lista de recetas que tengan menor o igual tiempo del especificado
+     */
     public static List<Receta> findRecetaConTiempoMenorA(Integer tiempoEnMinutos){
         return find.query()
                 .where()
@@ -54,12 +71,16 @@ public class Receta extends Model{
                 .findList();
     }
 
+    /**
+     * Método para buscar recetas por ingrediente
+     * @param nombreIngrediente Nombre del ingrediente que se desea que contenga la receta
+     * @return Lista de recetas que contienen el ingrediente especificado
+     */
     public static List<Receta> findbyIngrediente(String nombreIngrediente){
         return find.query()
                 .where()
                 .in("id", Ingrediente.findParentRecetabyNombreIngrediente(nombreIngrediente))
                 .findList();
-        //"SELECT * FROM RECETA WHERE ID IN (select PARENT_RECETA_ID from INGREDIENTE WHERE nombre_Ingrediente='"+nombreIngrediente+"')"
     }
 
     // Getters & Setters

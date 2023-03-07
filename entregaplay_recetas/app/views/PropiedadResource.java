@@ -13,8 +13,6 @@ import javax.validation.constraints.NotBlank;
 
 public class PropiedadResource {
 
-    //private Long id;
-
     @Inject
     private MessagesApi messagesApi;
 
@@ -29,17 +27,8 @@ public class PropiedadResource {
 
     public PropiedadResource(Propiedad propiedad){
         super();
-        //this.id = propiedad.getId();
         this.nombrePropiedad = propiedad.getNombrePropiedad().trim().toLowerCase();
     }
-
-//    public Long getId() {
-//        return id;
-//    }
-//
-//    public void setId(Long id) {
-//        this.id = id;
-//    }
 
     public String getNombrePropiedad() {
         return nombrePropiedad;
@@ -55,7 +44,6 @@ public class PropiedadResource {
 
     public Propiedad toModel(){
         Propiedad pro = new Propiedad();
-        //pro.setId(this.id);
         pro.setNombrePropiedad(this.nombrePropiedad);
         return pro;
     }

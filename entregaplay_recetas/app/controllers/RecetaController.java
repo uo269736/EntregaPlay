@@ -1,14 +1,9 @@
 package controllers;
 
 import actions.Timed;
-import actions.TimerAction;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.ArrayNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
-import models.Ingrediente;
 import models.Propiedad;
 import models.Receta;
-import play.cache.Cached;
 import play.cache.SyncCacheApi;
 import play.data.Form;
 import play.data.FormFactory;
@@ -17,10 +12,7 @@ import play.i18n.MessagesApi;
 import play.libs.Json;
 import play.mvc.*;
 import play.twirl.api.Content;
-import views.PropiedadResource;
 import views.RecetaResource;
-import views.xml.receta;
-import models.Receta;
 
 import javax.inject.Inject;
 import java.util.ArrayList;
@@ -38,35 +30,18 @@ public class RecetaController extends Controller {
     @Inject
     private MessagesApi messagesApi;
 
-
     // Cache:
     @Inject
     private SyncCacheApi cache;
 
+
+    /**
+     * Método POST que crea una receta con todos los datos
+     * @param req Request
+     * @return Devuelve la receta que se ha creado
+     */
     @Timed
     public Result create(Http.Request req) {
-        // Los datos de la receta para crearlo vienen en el body
-        /* JSON DE PRUEBA
-{
-    "nombre":"nueva",
-    "ingredientes":[
-        {
-            "nombreIngrediente":"inuevo1",
-            "cantidad":100,
-            "unidad":"g"
-        },
-        {
-            "nombreIngrediente":"inuevo2",
-            "cantidad":200,
-            "unidad":"centilitros"
-        }
-    ],
-    "descripcion":"Descripcion nueva",
-    "pasos":"Pasos receta nueva",
-    "tiempo":100,
-    "imagenUrl":"http://xxx.com/imgNueva.png"
-}
-         */
         Messages messages = messagesApi.preferred(req.acceptLanguages());
         Form<RecetaResource> recetaForm = formFactory.form(RecetaResource.class).bindFromRequest(req);
         RecetaResource recetaResource;
@@ -99,33 +74,40 @@ public class RecetaController extends Controller {
                 }
                 existe=false;
             }
-
             recetaModel.setPropiedades(propiedadesReceta);
-
             return compruebaJsonXML(recetaModel,req);
         }
     }
 
 
+    /**
+     * Método GET para obtener una receta por id
+     * @param id Id de la receta que se desea obtener
+     * @param req Request
+     * @return La receta que coincida con el id especificado
+     */
     public Result get(Integer id, Http.Request req) {
         Messages messages = messagesApi.preferred(req);
         Receta rec = Receta.findById(Long.valueOf(id));
 
         if (rec == null){
-            // Nos piden uno que no existe
             return Results.notFound(messages.at("receta-no-encontrada"));
         }
-
         return compruebaJsonXML(rec,req);
     }
 
+    /**
+     * Método UPDATE para actualizar una receta por id
+     * @param id Id de la receta que se desea modificar
+     * @param req Request
+     * @return La recta actualizada en caso de que exista
+     */
     @Timed
     public Result update(Integer id, Http.Request req) {
         Messages messages = messagesApi.preferred(req);
         Receta rec = Receta.findById(Long.valueOf(id));
 
         if (rec == null){
-            // Nos piden uno que no existe
             return Results.notFound(messages.at("receta-no-encontrada"));
         } else {
 
@@ -151,13 +133,18 @@ public class RecetaController extends Controller {
         }
     }
 
+    /**
+     * Método DELETE para eliminar una receta por id
+     * @param id Id de la receta que se desea eliminar
+     * @param req Request
+     * @return La receta eliminada en caso de que exista
+     */
     @Timed
     public Result delete(Integer id, Http.Request req) {
         Messages messages = messagesApi.preferred(req);
         Receta rec = Receta.findById(Long.valueOf(id));
 
         if (rec == null){
-            // Nos piden uno que no existe
             return Results.notFound(messages.at("receta-no-encontrada"));
         } else {
 
@@ -171,6 +158,11 @@ public class RecetaController extends Controller {
     }
 
     // @Cached(key="all-recetas-view") --> Cache de 1 Nivel (lo guarda una vez y ya, lo malo es que no cambia al poner json o xml, lo deja como este la primera vez
+    /**
+     * Método GET para obtener todas las recetas
+     * @param req Request
+     * @return Devuelve todas las recetas
+     */
     @Timed
     public Result getAll(Http.Request req) {
         Messages messages = messagesApi.preferred(req);
@@ -191,6 +183,12 @@ public class RecetaController extends Controller {
 
     }
 
+    /**
+     * Método GET que filtra las recetas con tiempo menor o igual al especificado
+     * @param tiempoEnMinutos Tiempo de realización de la receta
+     * @param req Request
+     * @return Lista de recetas que tengan un tiempo menor o igual al especificado
+     */
     public Result getRecetasConTiempoMenorA(Integer tiempoEnMinutos, Http.Request req) {
         Messages messages = messagesApi.preferred(req);
         List<Receta> recetas = Receta.findRecetaConTiempoMenorA(tiempoEnMinutos);
@@ -198,6 +196,12 @@ public class RecetaController extends Controller {
         return compruebaJsonXML(recetas,req);
     }
 
+    /**
+     * Método GET que filtra las recetas por ingrediente
+     * @param nombreIngrediente Nombre del ingrediente que debe contener la receta
+     * @param req Request
+     * @return Lista de recetas que contengan el ingrediente especificado
+     */
     public Result getRecetasConIngrediente(String nombreIngrediente, Http.Request req) {
         Messages messages = messagesApi.preferred(req);
         List<Receta> recetas = Receta.findbyIngrediente(nombreIngrediente);
@@ -205,6 +209,12 @@ public class RecetaController extends Controller {
         return compruebaJsonXML(recetas,req);
     }
 
+    /**
+     * Método para comprobar el formato de la respuesta (Json o Xml) con una receta
+     * @param receta Receta
+     * @param req Request
+     * @return Devuelve la respuesta en el formato correspondiente
+     */
     private Result compruebaJsonXML(Receta receta, Http.Request req){
         Result res;
         if (req.accepts("application/json")){
@@ -218,8 +228,14 @@ public class RecetaController extends Controller {
         return res;
     }
 
+    /**
+     * Método para comprobar el formato de la respuesta (Json o Xml) con una lista de recetas
+     * @param recetas Lista de recetas
+     * @param req Request
+     * @return Devuelve la respuesta en el formato correspondiente
+     */
     private Result compruebaJsonXML(List<Receta> recetas, Http.Request req){
-        List<RecetaResource> resources = recetas.stream().map(RecetaResource::new).collect(Collectors.toList()); // Convertir objeto receta a objeto recetaResource
+        List<RecetaResource> resources = recetas.stream().map(RecetaResource::new).collect(Collectors.toList());
         Result res;
         if (req.accepts("application/json")){
             JsonNode json = Json.toJson(resources);
