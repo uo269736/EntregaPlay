@@ -14,7 +14,7 @@ libraryDependencies += evolutions
 libraryDependencies += jdbc
 
 libraryDependencies += "com.h2database" % "h2" % "1.4.200"
-
+libraryDependencies += "org.postgresql" % "postgresql" % "42.2.12"
 
 // Para utilizar la cache:
 libraryDependencies ++= Seq(
