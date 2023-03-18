@@ -27,6 +27,9 @@ public class HomeControllerTest extends WithApplication {
         return Helpers.fakeApplication(Helpers.inMemoryDatabase());
     }
 
+    /**
+     * Test para comprobar el funcionamiento del GetAll
+     */
     @Test
     public void testGetAllReceta() {
         Http.RequestBuilder req = Helpers.fakeRequest()
@@ -37,6 +40,9 @@ public class HomeControllerTest extends WithApplication {
         assertEquals(200, r.status());
     }
 
+    /**
+     * Test para comprobar que una receta no existe
+     */
     @Test
     public void testGetRecetaNoexiste() {
         Http.RequestBuilder req = Helpers.fakeRequest()
@@ -47,6 +53,9 @@ public class HomeControllerTest extends WithApplication {
         assertEquals(404, r.status());
     }
 
+    /**
+     * Test para comprobar que el xml se genera correctamente
+     */
     @Test
     public void testRecetaView() {
         Receta r = new Receta();

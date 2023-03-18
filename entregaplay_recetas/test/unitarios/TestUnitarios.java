@@ -10,6 +10,9 @@ import static org.junit.Assert.assertEquals;
 
 public class TestUnitarios {
 
+    /**
+     * Test para comprobar que los ingredientes se añaden correctamente a la lista
+     */
     @Test
     public void addIngrediente() {
         Receta r = new Receta();
@@ -25,6 +28,9 @@ public class TestUnitarios {
         assertEquals(i.getParentReceta(), r);
     }
 
+    /**
+     * Test para comprobar que la descripcion cumple con los requisitos del validador (número de caracteres y espacio)
+     */
     @Test
     public void validadorDescripcion() {
         DescripcionRecetaValidator drv = new DescripcionRecetaValidator();
@@ -34,6 +40,9 @@ public class TestUnitarios {
         assertEquals(drv.isValid("Hola aaaaaaaaaaaaaaaaaaaaaaaaaaaaa"), true);
     }
 
+    /**
+     * Test para comprobar que la propiedad se añade correctamente a la receta
+     */
     @Test
     public void addPropiedadReceta() {
         Receta r = new Receta();

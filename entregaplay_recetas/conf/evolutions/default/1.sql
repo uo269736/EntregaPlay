@@ -58,25 +58,25 @@ alter table receta_propiedad add constraint fk_receta_propiedad_propiedad foreig
 # --- !Downs
 
 -- drop all foreign keys
-alter table if exists ingrediente drop constraint if exists fk_ingrediente_parent_receta_id;
+alter table ingrediente drop constraint if exists fk_ingrediente_parent_receta_id;
 drop index if exists ix_ingrediente_parent_receta_id;
 
-alter table if exists receta drop constraint if exists fk_receta_imagen_id;
+alter table receta drop constraint if exists fk_receta_imagen_id;
 
-alter table if exists receta_propiedad drop constraint if exists fk_receta_propiedad_receta;
+alter table receta_propiedad drop constraint if exists fk_receta_propiedad_receta;
 drop index if exists ix_receta_propiedad_receta;
 
-alter table if exists receta_propiedad drop constraint if exists fk_receta_propiedad_propiedad;
+alter table receta_propiedad drop constraint if exists fk_receta_propiedad_propiedad;
 drop index if exists ix_receta_propiedad_propiedad;
 
 -- drop all
-drop table if exists imagen_receta cascade;
+drop table if exists imagen_receta;
 
-drop table if exists ingrediente cascade;
+drop table if exists ingrediente;
 
-drop table if exists propiedad cascade;
+drop table if exists propiedad;
 
-drop table if exists receta cascade;
+drop table if exists receta;
 
-drop table if exists receta_propiedad cascade;
+drop table if exists receta_propiedad;
 

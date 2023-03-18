@@ -34,6 +34,8 @@ public class RecetaController extends Controller {
     @Inject
     private SyncCacheApi cache;
 
+    private Boolean hayCambios = false;
+
 
     /**
      * Método POST que crea una receta con todos los datos
@@ -56,6 +58,7 @@ public class RecetaController extends Controller {
             List<Propiedad> propiedadesReceta = recetaModel.getPropiedades();
             recetaModel.setPropiedades(new ArrayList<Propiedad>());
             recetaModel.save();
+            hayCambios = true;
 
             Boolean existe = false;
             for(Propiedad p: propiedadesReceta){
@@ -127,6 +130,7 @@ public class RecetaController extends Controller {
                 }
 
                 recetaModel.update();
+                hayCambios = true;
 
                 return compruebaJsonXML(recetaModel,req);
             }
@@ -151,6 +155,7 @@ public class RecetaController extends Controller {
             RecetaResource recetaResource = new RecetaResource(rec);
             Receta recetaModel = recetaResource.toModel();
             recetaModel.delete();
+            hayCambios = true;
 
             return compruebaJsonXML(recetaModel,req);
         }
@@ -170,13 +175,14 @@ public class RecetaController extends Controller {
         // Cache de la lista de la bbdd de las recetas (Acceso a la bbdd) 2 Nivel
         List<Receta> recetas;
         Optional<Object> optRecetas = cache.get("all-recetas");
-        if (optRecetas.isPresent()) {
+        if (optRecetas.isPresent() && !hayCambios) {
             System.out.println("Valor cacheado");
             recetas = (List<Receta>) optRecetas.get();
         } else {
             System.out.println("Valor NO cacheado");
             recetas = Receta.findAll();
             cache.set("all-recetas", recetas);
+            hayCambios = false;
         }
 
         return compruebaJsonXML(recetas,req);
