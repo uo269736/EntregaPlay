@@ -5,6 +5,10 @@ import models.Propiedad;
 import models.Receta;
 import org.junit.Test;
 import validators.DescripcionRecetaValidator;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
 
@@ -17,8 +21,9 @@ public class TestUnitarios {
     public void addIngrediente() {
         Receta r = new Receta();
         Ingrediente i = new Ingrediente();
+        List<Ingrediente> listaVacia = new ArrayList<>();
         //Comprobar que no hay ningun ingrediente en la receta
-        assertEquals(r.getIngredientes(),null );
+        assertEquals(r.getIngredientes(),listaVacia );
         //Comprobar que el ingrediente no esta asociado a ninguna receta
         assertEquals(i.getParentReceta(),null );
         r.addIngredientes(i);
@@ -47,10 +52,12 @@ public class TestUnitarios {
     public void addPropiedadReceta() {
         Receta r = new Receta();
         Propiedad p = new Propiedad();
+        Set<Receta> listaVaciaReceta = new HashSet<>();
+        List<Propiedad> listaVaciaPropiedad = new ArrayList<>();
         //Comprobar que la propiedad no esta asociada a ninguna receta
-        assertEquals(p.getRecetas(),null );
+        assertEquals(p.getRecetas(),listaVaciaReceta );
         //Comprobar que la receta no tiene ninguna propiedad
-        assertEquals(r.getPropiedades(),null );
+        assertEquals(r.getPropiedades(),listaVaciaPropiedad );
         r.addPropiedad(p);
         //Comprobar que la propiedad tiene una receta asociada
         assertEquals(p.getRecetas().size(),1 );

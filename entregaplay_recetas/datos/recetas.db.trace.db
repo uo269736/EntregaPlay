@@ -6956,3 +6956,19 @@ Caused by: java.lang.IllegalStateException: The file is locked: nio:C:/Users/Mig
 	at org.h2.mvstore.FileStore.open(FileStore.java:172)
 	at org.h2.mvstore.MVStore.<init>(MVStore.java:381)
 	... 27 more
+2023-03-18 16:31:07 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLNonTransientException: El conjunto de resultados NO es actualizable. El query debe seleccionar todas la columnas desde una clave de unicidad. Solo una tabla puede ser seleccionada.
+The result set is not updatable. The query must select all columns from a unique key. Only one table may be selected. [90127-200]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:505)
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:429)
+	at org.h2.message.DbException.get(DbException.java:205)
+	at org.h2.message.DbException.get(DbException.java:181)
+	at org.h2.message.DbException.get(DbException.java:170)
+	at org.h2.jdbc.JdbcResultSet.getUpdatableRow(JdbcResultSet.java:3130)
+	at org.h2.jdbc.JdbcResultSet.deleteRow(JdbcResultSet.java:3075)
+	at org.h2.server.web.WebApp.editResult(WebApp.java:1144)
+	at org.h2.server.web.WebApp.process(WebApp.java:247)
+	at org.h2.server.web.WebApp.processRequest(WebApp.java:173)
+	at org.h2.server.web.WebThread.process(WebThread.java:139)
+	at org.h2.server.web.WebThread.run(WebThread.java:94)
+	at java.base/java.lang.Thread.run(Thread.java:834)

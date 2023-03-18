@@ -33,6 +33,7 @@ public class Receta extends Model{
     @JsonManagedReference
     private List<Propiedad> propiedades;
 
+
     /**
      * Método para buscar recetas por id
      * @param id Id de la receta que se desea encontrar
